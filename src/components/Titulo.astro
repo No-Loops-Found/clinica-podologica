@@ -1,0 +1,10 @@
+---
+/** Encabezado de sección: antetítulo, título (admite <em>) y entradilla. */
+interface Props { eyebrow?: string; titulo?: string; intro?: string; center?: boolean; id?: string; }
+const { eyebrow, titulo, intro, center = false, id } = Astro.props;
+---
+<div class:list={['max-w-[60ch]', center && 'mx-auto text-center']}>
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <h2 id={id} class="mt-3 text-[2rem] leading-[1.1] md:text-[2.5rem]"><slot>{titulo}</slot></h2>
+  {intro && <p class="mt-4 text-[1.1rem] text-muted">{intro}</p>}
+</div>

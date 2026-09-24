@@ -1,0 +1,43 @@
+---
+/**
+ * Cabecera de subpágina. Si se pasa un teléfono, muestra a la derecha la
+ * tarjeta de cita de esa especialidad.
+ */
+import type { PHONES } from '../consts';
+import Icon from './Icon.astro';
+interface Props {
+  titulo: string;
+  entradilla?: string;
+  eyebrow?: string;
+  phone?: (typeof PHONES)[number];
+  tono?: 'mist' | 'sand';
+}
+const { titulo, entradilla, eyebrow, phone, tono = 'mist' } = Astro.props;
+---
+<section class:list={['relative overflow-hidden border-b border-line', tono === 'sand' ? 'bg-sand' : 'bg-mist']}>
+  <div class="pointer-events-none absolute -right-24 -top-40 h-[30rem] w-[30rem] rounded-full bg-brand/15 blur-3xl" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute inset-y-0 right-0 hidden w-2/5 bg-dots opacity-70 [mask-image:linear-gradient(to_left,black,transparent)] lg:block" aria-hidden="true"></div>
+
+  <div class="wrap relative grid gap-8 py-14 md:grid-cols-[1.35fr_1fr] md:items-end md:py-20">
+    <div>
+      {eyebrow && <p class="eyebrow rise">{eyebrow}</p>}
+      <h1 class="rise mt-3 max-w-[18ch] text-[2.5rem] leading-[1.05] md:text-[3.4rem]">{titulo}</h1>
+      {entradilla && <p class="rise rise-2 mt-5 max-w-[58ch] text-[1.15rem] text-muted md:text-[1.25rem]">{entradilla}</p>}
+      <slot />
+    </div>
+
+    {phone && (
+      <div class="rise rise-3 md:justify-self-end">
+        <a href={`tel:${phone.tel}`} class="card card-hover flex items-center gap-4 p-4 pr-6">
+          <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-mist text-brand-deep">
+            <Icon name={phone.icon} size={26} />
+          </span>
+          <span>
+            <span class="block text-[0.78rem] font-bold uppercase tracking-[0.12em] text-brand-deep">Pide cita · {phone.who}</span>
+            <span class="block font-display text-[1.6rem] leading-tight tabular-nums text-deep">{phone.display}</span>
+          </span>
+        </a>
+      </div>
+    )}
+  </div>
+</section>

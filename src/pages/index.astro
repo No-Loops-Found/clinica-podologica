@@ -1,0 +1,199 @@
+---
+import Base from '../layouts/Base.astro';
+import Directorio from '../components/Directorio.astro';
+import Faq from '../components/Faq.astro';
+import Titulo from '../components/Titulo.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Avatar from '../components/Avatar.astro';
+import Icon from '../components/Icon.astro';
+import { SITE, PHONES } from '../consts';
+import { SERVICIOS } from '../data/servicios';
+import { EQUIPO } from '../data/equipo';
+
+const sellos = [
+  { icon: 'user', texto: 'Atención individual' },
+  { icon: 'clock', texto: 'Tratamiento en la misma visita' },
+  { icon: 'phone', texto: 'Teléfono directo por especialidad' },
+];
+
+/* Derivado de las preguntas frecuentes ya publicadas. */
+const pasos = [
+  { titulo: 'Llama a la especialidad', texto: 'Cada profesional atiende su propio teléfono, así hablas directamente con quien te va a tratar.' },
+  { titulo: 'Primera visita', texto: 'Abrimos tu historia clínica y valoramos lo que te ocurre. En podología, la consulta dura entre 30 y 40 minutos.' },
+  { titulo: 'Tratamiento el mismo día', texto: 'Tratamos la dolencia en la misma visita y te explicamos cómo cuidarte en casa.' },
+];
+const patricia = EQUIPO[0];
+---
+<Base
+  title="Clínica Podológica Patricia Mateos | Podología en Moraleja, Cáceres"
+  description="Podología, nutrición y osteopatía en Moraleja. Durezas, uñas encarnadas, plantillas personalizadas y estudio de la pisada. Calle Jardines 44 bajo. Llama al 633 939 293.">
+
+  <!-- Portada -->
+  <section class="relative overflow-hidden bg-mist">
+    <div class="pointer-events-none absolute -left-40 top-1/2 h-[38rem] w-[38rem] -translate-y-1/2 rounded-full bg-brand/10 blur-3xl" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 bg-dots opacity-60 [mask-image:linear-gradient(to_left,black_30%,transparent)] lg:block" aria-hidden="true"></div>
+
+    <div class="wrap relative grid gap-12 pb-20 pt-12 md:grid-cols-[1.05fr_0.95fr] md:items-center md:py-20 lg:py-24">
+      <div>
+        <p class="eyebrow rise">Podología · Nutrición · Osteopatía</p>
+        <h1 class="rise mt-4 max-w-[15ch] text-[2.8rem] leading-[1.02] md:text-[3.6rem] lg:text-[4.1rem]">
+          Cuidamos tus pies <em class="italic text-brand-deep">en Moraleja</em>
+        </h1>
+        <p class="rise rise-2 mt-6 max-w-[50ch] text-[1.15rem] text-muted md:text-[1.25rem]">
+          Clínica de podología con servicio de nutrición y osteopatía. Atendemos cada caso
+          de forma individual, en {SITE.street}.
+        </p>
+        <div class="rise rise-2 mt-8 flex flex-wrap gap-3">
+          <a href={`tel:${PHONES[0].tel}`} class="btn btn-primary btn-lg tabular-nums">
+            <Icon name="phone" size={20} />
+            Llamar al {PHONES[0].display}
+          </a>
+          <a href="/pide-tu-cita/" class="btn btn-secondary btn-lg">Pedir cita</a>
+        </div>
+        <ul class="rise rise-3 mt-9 flex flex-wrap gap-x-7 gap-y-3 text-[0.95rem] text-muted">
+          {sellos.map((s) => (
+            <li class="flex items-center gap-2">
+              <Icon name={s.icon} size={18} class="text-brand-deep" />
+              {s.texto}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="relative order-first mx-auto w-full max-w-[24rem] md:order-none md:max-w-[26rem] md:justify-self-end">
+        <div class="absolute inset-0 translate-x-4 translate-y-4 rounded-arch bg-brand/20" aria-hidden="true"></div>
+        <div class="absolute -left-6 top-10 h-24 w-24 rounded-full bg-peach" aria-hidden="true"></div>
+        <img src="/img/patricia.webp" width="821" height="821" loading="eager" fetchpriority="high"
+             alt="Patricia Mateos, podóloga y directora de la clínica"
+             class="relative aspect-[4/5] w-full rounded-arch object-cover object-top shadow-lift" />
+        <div class="absolute -bottom-6 left-6 flex items-center gap-3 rounded-2xl bg-white py-3 pl-3 pr-5 shadow-lift">
+          <span class="flex h-10 w-10 items-center justify-center rounded-full bg-mist text-brand-deep">
+            <Icon name="foot" size={22} />
+          </span>
+          <span class="leading-tight">
+            <span class="block text-[0.72rem] font-bold uppercase tracking-[0.12em] text-brand-deep">Directora y podóloga</span>
+            <span class="font-display text-[1.15rem] text-deep">Patricia Mateos</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teléfonos, solapados sobre la portada -->
+  <section class="wrap relative z-10 -mt-8 md:-mt-10" aria-labelledby="tel-titulo">
+    <h2 id="tel-titulo" class="sr-only">Teléfonos por especialidad</h2>
+    <Directorio />
+  </section>
+
+  <!-- Especialidades -->
+  <section class="wrap py-20 md:py-24" aria-labelledby="serv-titulo">
+    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <Titulo eyebrow="Especialidades" id="serv-titulo"
+              intro="Tres especialidades en la misma clínica, cada una con su profesional y su propio teléfono.">
+        Lo que hacemos
+      </Titulo>
+      <a href="/servicios/" class="link-arrow shrink-0">Ver todos los servicios <Icon name="arrow" size={18} /></a>
+    </div>
+
+    <div class="mt-12 grid gap-5 md:grid-cols-3">
+      {SERVICIOS.map((s, i) => (
+        <a href={s.href} class="card card-hover group flex flex-col p-7">
+          <div class="flex items-center justify-between">
+            <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-mist text-brand-deep transition-colors group-hover:bg-deep group-hover:text-aqua-light">
+              <Icon name={s.phone.icon} size={28} />
+            </span>
+            <span class="num">0{i + 1}</span>
+          </div>
+          <h3 class="mt-6 text-[1.5rem]">{s.tituloLargo}</h3>
+          <p class="mt-3 text-muted">{s.resumen}</p>
+          <ul class="mt-5 flex flex-wrap gap-2">
+            {s.puntos.map((p) => <li class="rounded-full bg-sand px-3 py-1 text-[0.85rem] font-medium text-deep">{p}</li>)}
+          </ul>
+          <div class="mt-auto flex items-center justify-between gap-3 pt-7 text-[0.95rem]">
+            <span class="text-muted">{s.quien}</span>
+            <span class="inline-flex shrink-0 items-center gap-1.5 font-semibold text-brand-deep">
+              Ver más <Icon name="arrow" size={16} class="transition-transform group-hover:translate-x-1" />
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Cómo funciona -->
+  <section class="border-y border-line bg-sand" aria-labelledby="pasos-titulo">
+    <div class="wrap grid gap-12 py-20 md:grid-cols-[0.75fr_1.25fr] md:py-24">
+      <div class="md:sticky md:top-28 md:self-start">
+        <Titulo eyebrow="Tu primera visita" id="pasos-titulo"
+                intro="Sin intermediarios: llamas, te atendemos y tratamos el problema en la misma consulta.">
+          Así funciona
+        </Titulo>
+        <a href="/pide-tu-cita/" class="btn btn-primary mt-8">Pide tu cita <Icon name="arrow" size={18} /></a>
+      </div>
+      <ol class="grid gap-4 sm:grid-cols-3">
+        {pasos.map((p, i) => (
+          <li class="relative rounded-3xl bg-white p-6 shadow-soft">
+            <span class="flex h-11 w-11 items-center justify-center rounded-full bg-deep font-display text-[1.1rem] text-aqua-light">0{i + 1}</span>
+            <h3 class="mt-5 text-[1.25rem] leading-tight">{p.titulo}</h3>
+            <p class="mt-2 text-[0.98rem] text-muted">{p.texto}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- La clínica -->
+  <section class="wrap grid gap-12 py-20 md:grid-cols-2 md:items-center md:py-24" aria-labelledby="clinica-titulo">
+    <figure class="relative overflow-hidden rounded-[2rem] bg-deep p-8 text-paper md:p-10">
+      <div class="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-brand/30 blur-3xl" aria-hidden="true"></div>
+      <span class="font-display text-[5rem] leading-none text-aqua-light/40" aria-hidden="true">“</span>
+      <blockquote class="-mt-8 font-display text-[1.5rem] leading-snug text-white md:text-[1.8rem]">
+        <em>Siempre tuve claro que me dedicaría al mundo sanitario. Fue un problema en mis propios pies
+        el que hizo que la podología pasara a ser mi meta.</em>
+      </blockquote>
+      <figcaption class="mt-7 flex items-center gap-3">
+        <Avatar miembro={patricia} class="h-12 w-12 ring-2 ring-white/30" />
+        <span class="leading-tight">
+          <span class="block font-semibold text-white">{patricia.nombre}</span>
+          <span class="text-[0.9rem] text-paper/70">{patricia.rol}</span>
+        </span>
+      </figcaption>
+    </figure>
+
+    <div>
+      <Titulo eyebrow="La clínica" id="clinica-titulo">Un proyecto propio, <em class="italic text-brand-deep">con nombre y apellidos</em></Titulo>
+      <p class="mt-5 max-w-[56ch] text-[1.08rem]">
+        Después de cuatro años de estudios, muchos cursos y más de tres trabajando en otras
+        clínicas, Patricia se estableció en Moraleja. Hoy la clínica reúne a cuatro
+        profesionales: dos podólogas, una dietista-nutricionista y una quiromasajista y osteópata.
+      </p>
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+        {EQUIPO.map((m) => (
+          <li class="flex items-center gap-3">
+            <Avatar miembro={m} class="h-12 w-12" text="text-base" />
+            <span class="leading-tight">
+              <span class="block font-semibold text-deep">{m.nombre}</span>
+              <span class="text-[0.85rem] text-muted">{m.rol}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+      <a href="/sobre-nosotros/" class="btn btn-tonal mt-8">Conoce al equipo <Icon name="arrow" size={18} /></a>
+    </div>
+  </section>
+
+  <!-- Preguntas frecuentes -->
+  <section class="border-t border-line" aria-labelledby="faq-titulo">
+    <div class="wrap grid gap-10 py-20 md:grid-cols-[0.75fr_1.25fr] md:py-24">
+      <div class="md:sticky md:top-28 md:self-start">
+        <Titulo eyebrow="Preguntas frecuentes" id="faq-titulo"
+                intro="Si tienes otra duda, llámanos y te la resolvemos por teléfono.">
+          Lo que más nos preguntan
+        </Titulo>
+      </div>
+      <Faq />
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

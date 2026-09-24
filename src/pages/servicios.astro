@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { SERVICIOS } from '../data/servicios';
+---
+<Base
+  title="Servicios | Clínica Podológica Patricia Mateos"
+  description="Podología, nutrición y osteopatía en la misma clínica en Moraleja, Cáceres.">
+
+  <Hero eyebrow="Servicios" titulo="Tres especialidades, una clínica"
+        entradilla="Cada especialidad tiene su profesional y su propio teléfono. Elige la que necesites y llama directamente." />
+
+  <div class="wrap space-y-6 py-16 md:py-20">
+    {SERVICIOS.map((s, i) => (
+      <article class="card grid overflow-hidden md:grid-cols-[0.8fr_1.2fr]">
+        <div class="relative flex flex-col justify-between bg-mist bg-dots p-8">
+          <span class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-brand-deep shadow-soft">
+            <Icon name={s.phone.icon} size={32} />
+          </span>
+          <div class="mt-10">
+            <p class="eyebrow">Teléfono directo</p>
+            <a href={`tel:${s.phone.tel}`} class="mt-1 block font-display text-[1.9rem] leading-tight tabular-nums text-deep hover:text-brand-deep">
+              {s.phone.display}
+            </a>
+            <p class="text-[0.92rem] text-muted">{s.quien}</p>
+          </div>
+        </div>
+        <div class="p-8 md:p-10">
+          <span class="num">0{i + 1}</span>
+          <h2 class="mt-2 text-[1.8rem] md:text-[2rem]">{s.tituloLargo}</h2>
+          <p class="mt-3 max-w-[60ch] text-[1.05rem] text-muted">{s.resumen}</p>
+          <ul class="mt-6 grid gap-2.5 sm:grid-cols-2">
+            {s.puntos.map((p) => (
+              <li class="flex items-center gap-2.5 text-[0.98rem]">
+                <Icon name="check" size={18} class="shrink-0 text-brand" />
+                {p}
+              </li>
+            ))}
+          </ul>
+          <a href={s.href} class="btn btn-primary mt-8">
+            Ver {s.titulo.toLowerCase()} <Icon name="arrow" size={18} />
+          </a>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <CtaBand />
+</Base>

@@ -1,0 +1,29 @@
+---
+import { FAQ } from '../data/faq';
+import Icon from './Icon.astro';
+interface Props { items?: typeof FAQ; }
+const { items = FAQ } = Astro.props;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+<div class="faq space-y-3">
+  {items.map((f) => (
+    <details class="rounded-2xl border border-line bg-white px-5 transition-colors open:border-mist-deep open:shadow-soft">
+      <summary class="flex items-center justify-between gap-6 py-4 text-deep">
+        <h3 class="text-[1.12rem] font-medium leading-snug text-inherit">{f.q}</h3>
+        <span class="chev flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-mist text-brand-deep" aria-hidden="true">
+          <Icon name="chevron" size={18} />
+        </span>
+      </summary>
+      <p class="max-w-[68ch] pb-5 text-muted">{f.a}</p>
+    </details>
+  ))}
+</div>
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

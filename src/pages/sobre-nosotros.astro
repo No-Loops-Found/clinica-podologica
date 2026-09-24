@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Ficha from '../components/Ficha.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { EQUIPO } from '../data/equipo';
+
+const resumen = [
+  { icon: 'foot', n: 'Dos', que: 'podólogas', quien: 'Patricia y Celia' },
+  { icon: 'leaf', n: 'Una', que: 'dietista-nutricionista', quien: 'Tania' },
+  { icon: 'hand', n: 'Una', que: 'quiromasajista y osteópata', quien: 'Elena' },
+];
+---
+<Base
+  title="Equipo | Clínica Podológica Patricia Mateos"
+  description="Conoce al equipo de la clínica en Moraleja: Patricia Mateos y Celia Castellano en podología, Tania Zamarreño en nutrición y Elena Pérez en osteopatía y quiromasaje.">
+
+  <Hero eyebrow="Equipo" titulo="Cuatro profesionales, una clínica"
+        entradilla="Cada una con su especialidad y su propio teléfono. Así hablas directamente con quien te va a tratar." />
+
+  <section class="wrap py-14" aria-label="Resumen del equipo">
+    <ul class="grid gap-4 sm:grid-cols-3">
+      {resumen.map((r) => (
+        <li class="flex items-center gap-4 rounded-3xl border border-line bg-white p-5">
+          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-mist text-brand-deep"><Icon name={r.icon} size={24} /></span>
+          <span class="leading-tight">
+            <span class="block font-display text-[1.2rem] text-deep">{r.n} {r.que}</span>
+            <span class="text-[0.9rem] text-muted">{r.quien}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <div class="wrap space-y-8">
+    {EQUIPO.map((m) => <Ficha miembro={m} />)}
+  </div>
+
+  <CtaBand titulo="¿Con quién quieres hablar?" />
+</Base>

@@ -1,0 +1,59 @@
+---
+/**
+ * Elemento estructural del sitio: cada especialidad tiene su propio teléfono.
+ * Es el dato más útil de la clínica y el que más se busca desde el móvil.
+ *
+ * - layout «grid»: tres tarjetas en fila (portada, contacto, cita).
+ * - layout «list»: filas apiladas, para columnas estrechas (banda CTA).
+ */
+import { PHONES } from '../consts';
+import Icon from './Icon.astro';
+interface Props { variant?: 'light' | 'dark'; layout?: 'grid' | 'list'; }
+const { variant = 'light', layout = 'grid' } = Astro.props;
+const dark = variant === 'dark';
+const label = dark ? 'text-aqua-light' : 'text-brand-deep';
+const iconBox = dark ? 'bg-white/10 text-aqua-light' : 'bg-mist text-brand-deep';
+const surface = dark ? 'border border-white/10 bg-white/5 hover:bg-white/10' : 'card card-hover';
+---
+{layout === 'list' ? (
+  <ul class="grid gap-3">
+    {PHONES.map((p) => (
+      <li>
+        <a href={`tel:${p.tel}`} class:list={['group flex items-center gap-4 rounded-2xl p-4 transition-colors', surface]}>
+          <span class:list={['flex h-11 w-11 shrink-0 items-center justify-center rounded-full', iconBox]}>
+            <Icon name={p.icon} size={22} />
+          </span>
+          <span class="min-w-0 flex-1 leading-tight">
+            <span class:list={['block text-[0.78rem] font-bold uppercase tracking-[0.12em]', label]}>{p.area}</span>
+            <span class:list={['text-[0.9rem]', dark ? 'text-paper/70' : 'text-muted']}>{p.who}</span>
+          </span>
+          <span class:list={['font-display text-[1.45rem] leading-none tabular-nums sm:text-[1.6rem]', dark ? 'text-white' : 'text-deep']}>{p.display}</span>
+          <Icon name="arrow" size={18} class:list={['hidden shrink-0 transition-transform group-hover:translate-x-1 sm:block', label]} />
+        </a>
+      </li>
+    ))}
+  </ul>
+) : (
+  <ul class="grid gap-4 sm:grid-cols-3">
+    {PHONES.map((p) => (
+      <li>
+        <a href={`tel:${p.tel}`} class:list={['group flex h-full flex-col gap-3 rounded-3xl p-5 transition-colors md:p-6', surface]}>
+          <span class="flex items-center gap-3">
+            <span class:list={['flex h-11 w-11 shrink-0 items-center justify-center rounded-full', iconBox]}>
+              <Icon name={p.icon} size={22} />
+            </span>
+            <span class:list={['text-[0.78rem] font-bold uppercase tracking-[0.12em]', label]}>{p.area}</span>
+          </span>
+          <span class:list={['font-display text-[1.75rem] leading-none tabular-nums md:text-[1.9rem]', dark ? 'text-white' : 'text-deep']}>{p.display}</span>
+          <span class:list={['mt-auto flex items-center justify-between gap-2 text-[0.9rem]', dark ? 'text-paper/70' : 'text-muted']}>
+            <span>{p.who}</span>
+            <span class:list={['inline-flex items-center gap-1 font-semibold', label]}>
+              Llamar
+              <Icon name="arrow" size={15} class="transition-transform group-hover:translate-x-1" />
+            </span>
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+)}

@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { PHONES } from '../consts';
+---
+<Base title="Página no encontrada | Clínica Podológica Patricia Mateos"
+      description="La página que buscas no existe.">
+  <div class="relative overflow-hidden">
+    <img src="/img/favicon.png" alt="" width="682" height="684" aria-hidden="true"
+         class="pointer-events-none absolute -right-24 -top-16 w-[28rem] opacity-[0.07] md:w-[36rem]" />
+    <div class="wrap relative py-24 md:py-32">
+      <p class="font-display text-[5rem] leading-none text-mist-deep md:text-[7rem]" aria-hidden="true">404</p>
+      <h1 class="mt-2 max-w-[18ch] text-[2.4rem] leading-[1.1] md:text-[3rem]">Esta página no existe</h1>
+      <p class="mt-4 max-w-[52ch] text-[1.15rem] text-muted">
+        Puede que el enlace esté antiguo. Desde aquí puedes ir al inicio o llamarnos directamente.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/" class="btn btn-primary"><Icon name="home" size={18} /> Ir al inicio</a>
+        <a href={`tel:${PHONES[0].tel}`} class="btn btn-secondary tabular-nums">
+          <Icon name="phone" size={18} /> Llamar al {PHONES[0].display}
+        </a>
+      </div>
+    </div>
+  </div>
+</Base>

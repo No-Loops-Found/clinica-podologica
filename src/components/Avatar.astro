@@ -1,0 +1,14 @@
+---
+/** Foto de una profesional o, si no hay, sus iniciales sobre fondo aqua. */
+import type { Miembro } from '../data/equipo';
+interface Props { miembro: Miembro; class?: string; text?: string; }
+const { miembro: m, class: cls = 'h-16 w-16', text = 'text-xl' } = Astro.props;
+const iniciales = m.nombre.split(' ').map((p) => p[0]).join('');
+---
+{m.foto ? (
+  <img src={m.foto} alt={m.alt ?? m.nombre} width="200" height="200" loading="lazy"
+       class:list={['shrink-0 rounded-full object-cover object-top', cls]} />
+) : (
+  <span class:list={['flex shrink-0 items-center justify-center rounded-full bg-mist-deep font-display leading-none text-brand-deep', cls, text]}
+        role="img" aria-label={m.nombre}>{iniciales}</span>
+)}

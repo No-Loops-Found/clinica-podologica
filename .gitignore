@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.DS_Store
+.env
+.env.production
+
+# backup del WordPress anterior
+*.tar.gz

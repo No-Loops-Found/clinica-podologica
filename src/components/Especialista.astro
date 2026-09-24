@@ -1,0 +1,26 @@
+---
+/** Tarjeta «quién te atiende» para las páginas de especialidad. */
+import type { Miembro } from '../data/equipo';
+import type { PHONES } from '../consts';
+import Avatar from './Avatar.astro';
+import Icon from './Icon.astro';
+interface Props { miembros: Miembro[]; phone: (typeof PHONES)[number]; }
+const { miembros, phone } = Astro.props;
+const nombres = miembros.map((m) => m.nombre).join(' y ');
+const roles = [...new Set(miembros.map((m) => m.rol))].join(' · ');
+---
+<div class="card flex flex-col gap-6 p-6 sm:flex-row sm:items-center md:p-8">
+  <div class="flex -space-x-4">
+    {miembros.map((m) => <Avatar miembro={m} class="h-20 w-20 ring-4 ring-white" text="text-2xl" />)}
+  </div>
+  <div class="flex-1">
+    <p class="eyebrow">Te atiende</p>
+    <h3 class="mt-1 text-[1.4rem]">{nombres}</h3>
+    <p class="text-muted">{roles}</p>
+    <a href="/sobre-nosotros/" class="link-arrow mt-2 text-[0.95rem]">Conoce al equipo <Icon name="arrow" size={16} /></a>
+  </div>
+  <a href={`tel:${phone.tel}`} class="btn btn-primary tabular-nums">
+    <Icon name="phone" size={18} />
+    {phone.display}
+  </a>
+</div>

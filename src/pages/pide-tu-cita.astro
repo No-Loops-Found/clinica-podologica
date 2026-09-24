@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Directorio from '../components/Directorio.astro';
+import Titulo from '../components/Titulo.astro';
+import Icon from '../components/Icon.astro';
+import { SITE, MAPS_URL } from '../consts';
+
+const pasos = [
+  { icon: 'phone', titulo: 'Elige la especialidad y llama', texto: 'Podología, nutrición u osteopatía: cada una tiene su propio teléfono y la atiende su profesional.' },
+  { icon: 'calendar', titulo: 'Acordamos día y hora', texto: 'Te proponemos una cita que encaje contigo. Sin formularios ni esperas.' },
+  { icon: 'pin', titulo: 'Ven a la clínica', texto: `Estamos en ${SITE.street}, en el centro de ${SITE.city}.` },
+];
+---
+<Base
+  title="Pide tu cita | Clínica Podológica Patricia Mateos"
+  description="Reserva tu cita en la clínica de Moraleja llamando directamente a podología, nutrición u osteopatía.">
+
+  <Hero eyebrow="Cita" tono="sand" titulo="Pide tu cita por teléfono"
+        entradilla="Reserva de forma rápida llamando a la especialidad que necesites. Te atendemos de manera personalizada." />
+
+  <section class="wrap py-14 md:py-16" aria-label="Pasos para pedir cita">
+    <ol class="grid gap-4 md:grid-cols-3">
+      {pasos.map((p, i) => (
+        <li class="card relative p-6 pt-7">
+          <span class="absolute -top-3 left-6 rounded-full bg-deep px-3 py-1 font-display text-[0.9rem] text-aqua-light">Paso {i + 1}</span>
+          <span class="flex h-12 w-12 items-center justify-center rounded-full bg-mist text-brand-deep"><Icon name={p.icon} size={24} /></span>
+          <h2 class="mt-4 text-[1.3rem] leading-tight">{p.titulo}</h2>
+          <p class="mt-2 text-[0.98rem] text-muted">{p.texto}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="wrap" aria-labelledby="tel-titulo">
+    <Titulo eyebrow="Teléfonos" id="tel-titulo" intro="Toca el número para llamar desde el móvil." />
+    <div class="mt-8"><Directorio /></div>
+  </section>
+
+  <section class="wrap mt-16 grid gap-5 lg:grid-cols-[1.25fr_0.75fr]" aria-labelledby="antes-titulo">
+    <div class="rounded-[2rem] bg-mist p-7 md:p-10">
+      <p class="eyebrow">Antes de tu primera visita</p>
+      <h2 id="antes-titulo" class="mt-3 text-[1.8rem] leading-tight">Dos cosas que necesitamos saber</h2>
+      <ul class="mt-7 grid gap-4 sm:grid-cols-2">
+        <li class="rounded-3xl bg-white p-5 shadow-soft">
+          <span class="flex h-11 w-11 items-center justify-center rounded-full bg-mist text-brand-deep"><Icon name="shield" size={22} /></span>
+          <h3 class="mt-4 text-[1.15rem]">Diabetes y anticoagulantes</h3>
+          <p class="mt-2 text-[0.95rem] text-muted">
+            Dinos por teléfono si eres paciente diabético y si tomas algún anticoagulante o
+            antiagregante. Son datos que cambian el tratamiento.
+          </p>
+        </li>
+        <li class="rounded-3xl bg-white p-5 shadow-soft">
+          <span class="flex h-11 w-11 items-center justify-center rounded-full bg-mist text-brand-deep"><Icon name="clock" size={22} /></span>
+          <h3 class="mt-4 text-[1.15rem]">Entre 30 y 40 minutos</h3>
+          <p class="mt-2 text-[0.95rem] text-muted">
+            Es lo que dura la consulta de podología. Abrimos tu historia clínica, valoramos lo
+            que te ocurre y tratamos la dolencia en la misma visita.
+          </p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card flex flex-col p-7 md:p-8">
+      <span class="flex h-11 w-11 items-center justify-center rounded-full bg-mist text-brand-deep"><Icon name="pin" size={22} /></span>
+      <h2 class="mt-4 text-[1.4rem]">Dónde estamos</h2>
+      <address class="mt-2 not-italic text-muted">
+        {SITE.street}<br />{SITE.postal} {SITE.city} ({SITE.province})
+      </address>
+      <div class="mt-auto flex flex-wrap gap-3 pt-6">
+        <a href={MAPS_URL} target="_blank" rel="noopener" class="btn btn-tonal btn-sm">Google Maps <Icon name="external" size={16} /></a>
+        <a href="/contacto/" class="link-arrow text-[0.95rem]">Contacto <Icon name="arrow" size={16} /></a>
+      </div>
+    </div>
+
+    <!-- El WordPress anterior tenía un formulario que recogía email, teléfono,
+         servicio y franja horaria. No se ha portado a propósito: un formulario en
+         una web sanitaria necesita base legal, consentimiento, encargado del
+         tratamiento y un destino seguro para los datos. Decidirlo con la clínica
+         antes de volver a activarlo. -->
+  </section>
+</Base>

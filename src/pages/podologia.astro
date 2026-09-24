@@ -1,0 +1,125 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Faq from '../components/Faq.astro';
+import Titulo from '../components/Titulo.astro';
+import Especialista from '../components/Especialista.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { PHONES } from '../consts';
+import { EQUIPO } from '../data/equipo';
+import { FAQ } from '../data/faq';
+
+const bloques = [
+  {
+    id: 'podologia-general',
+    titulo: 'Podología general',
+    texto: 'Es el servicio más habitual y por el que más se conoce la podología. Comprende el diagnóstico y el tratamiento de las enfermedades y afecciones dermatológicas que pueden presentarse en el pie, además de la terapia farmacológica y las medidas preventivas y conservadoras.',
+    listaTitulo: 'Tratamos',
+    lista: [
+      'Hiperqueratosis y helomas (durezas y callos)',
+      'Infecciones por hongos en uñas y piel: micosis y pie de atleta',
+      'Infecciones por bacterias (eritrasma) o por virus (papilomas)',
+      'Alteraciones de la sudoración',
+      'Problemas ungueales: uñas encarnadas, uñas engrosadas y exostosis',
+    ],
+  },
+  {
+    id: 'ortopodologia',
+    titulo: 'Ortopodología',
+    texto: 'Tratamiento con plantillas personalizadas adaptadas a las características de cada paciente. La elección del material es determinante para corregir y tratar cada patología, y se decide según la edad, el peso, el estudio biomecánico y la actividad física. También realizamos ortesis de silicona para corregir, proteger y sustituir estructuras en la zona del antepié.',
+    listaTitulo: '',
+    lista: [],
+  },
+  {
+    id: 'estudio-biomecanico',
+    titulo: 'Estudio biomecánico',
+    texto: 'Es el estudio de la marcha: analizamos los movimientos que se producen al caminar, con el pie en posición estática y dinámica, y su relación con la rodilla, la cadera y la espalda. Contamos con una plataforma de sensores de presión donde se analizan las presiones plantares, los puntos de máximo apoyo y la progresión de la pisada.',
+    listaTitulo: 'Ayuda a prevenir',
+    lista: [
+      'Esguinces de repetición y metatarsalgias',
+      'Fascitis plantares y espolones calcáneos',
+      'Sobrecargas musculares',
+    ],
+  },
+  {
+    id: 'cirugia-podologica',
+    titulo: 'Cirugía podológica',
+    texto: 'Especialidad quirúrgica encargada del diagnóstico, el tratamiento y la corrección definitiva de malformaciones y enfermedades que aparecen en los pies. Es cirugía ambulatoria, sin ingreso, con anestesia local y en ocasiones con técnicas mínimamente invasivas, lo que permite volver pronto a la actividad diaria.',
+    listaTitulo: 'Tratamientos más frecuentes',
+    lista: ['Uñas encarnadas', 'Dedos en garra', 'Hallux valgus (juanetes)'],
+  },
+];
+
+const faqPies = FAQ.filter((f) =>
+  ['¿Qué es la hiperqueratosis?', '¿Qué es un heloma?', '¿Qué es una uña encarnada?', '¿Cuándo debo hacerme un estudio biomecánico de la pisada?', '¿Qué es lo primero que mi podóloga debe saber de mí?'].includes(f.q)
+);
+const podologas = EQUIPO.filter((m) => m.rol.startsWith('Podóloga'));
+---
+<Base
+  title="Podología en Moraleja | Clínica Podológica Patricia Mateos"
+  description="Podología general, ortopodología con plantillas personalizadas, estudio biomecánico de la pisada y cirugía podológica en Moraleja, Cáceres.">
+
+  <Hero eyebrow="Especialidad" titulo="Podología" phone={PHONES[0]}
+        entradilla="Tratamos la salud del pie de forma individual, desde las durezas y las uñas encarnadas hasta el estudio de la pisada y la cirugía." />
+
+  <div class="wrap grid gap-12 py-16 lg:grid-cols-[230px_1fr] lg:py-20">
+    <nav aria-label="Contenido de la página" class="hidden lg:block lg:sticky lg:top-28 lg:self-start">
+      <p class="eyebrow">En esta página</p>
+      <ol class="mt-4 border-l-2 border-line">
+        {bloques.map((b, i) => (
+          <li>
+            <a href={`#${b.id}`}
+               class="-ml-0.5 flex items-baseline gap-2.5 border-l-2 border-transparent py-2 pl-4 text-[0.95rem] text-muted transition-colors hover:border-brand hover:text-deep">
+              <span class="num">0{i + 1}</span>
+              {b.titulo}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <div class="space-y-6">
+      {bloques.map((b, i) => (
+        <section id={b.id} class="card p-7 md:p-10">
+          <div class="flex items-center gap-4">
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-mist font-display text-[1.05rem] text-brand-deep">0{i + 1}</span>
+            <h2 class="text-[1.7rem] leading-tight md:text-[2rem]">{b.titulo}</h2>
+          </div>
+          <p class="mt-5 max-w-[68ch] text-[1.08rem]">{b.texto}</p>
+          {b.lista.length > 0 && (
+            <div class="mt-6 rounded-2xl bg-sand p-5">
+              <p class="text-[0.78rem] font-bold uppercase tracking-[0.14em] text-muted">{b.listaTitulo}</p>
+              <ul class="mt-3 grid gap-2.5 sm:grid-cols-2">
+                {b.lista.map((li) => (
+                  <li class="flex items-start gap-2.5 text-[0.98rem]">
+                    <Icon name="check" size={18} class="mt-1 shrink-0 text-brand" />
+                    <span>{li}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      ))}
+    </div>
+  </div>
+
+  <section class="border-y border-line bg-sand" aria-labelledby="faq-pies">
+    <div class="wrap grid gap-10 py-20 md:grid-cols-[0.75fr_1.25fr]">
+      <div class="md:sticky md:top-28 md:self-start">
+        <Titulo eyebrow="Dudas habituales" id="faq-pies"
+                intro="Lo que más nos preguntan en consulta, explicado con palabras sencillas.">
+          Sobre los pies
+        </Titulo>
+      </div>
+      <Faq items={faqPies} />
+    </div>
+  </section>
+
+  <div class="wrap mt-16">
+    <Especialista miembros={podologas} phone={PHONES[0]} />
+  </div>
+
+  <CtaBand titulo="Pide cita de podología" texto="Atienden Patricia y Celia. Si es tu primera visita, dinos si eres paciente diabético o si tomas anticoagulantes." />
+</Base>

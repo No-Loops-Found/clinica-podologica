@@ -1,0 +1,80 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Titulo from '../components/Titulo.astro';
+import Especialista from '../components/Especialista.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { PHONES } from '../consts';
+import { EQUIPO } from '../data/equipo';
+
+const areas = [
+  ['Pérdida de peso y control de la obesidad', 'Planes adaptados a tu metabolismo y a tus hábitos de vida.'],
+  ['Nutrición infantil', 'Hábitos saludables para un crecimiento óptimo.'],
+  ['Patologías digestivas', 'Intolerancias alimentarias, síndrome del intestino irritable o enfermedad celíaca.'],
+  ['Nutrición deportiva', 'Planes específicos para el rendimiento y la recuperación.'],
+  ['Embarazo y lactancia', 'Alimentación adecuada en cada etapa.'],
+  ['Reeducación alimentaria', 'Aprender a comer de forma saludable sin dietas restrictivas.'],
+];
+const tel = PHONES[1];
+const tania = EQUIPO.filter((m) => m.nombre.startsWith('Tania'));
+---
+<Base
+  title="Nutricionista en Moraleja | Clínica Podológica Patricia Mateos"
+  description="Nutrición personalizada en Moraleja: pérdida de peso, nutrición infantil, patologías digestivas, deporte, embarazo y lactancia. Consulta presencial y online.">
+
+  <Hero eyebrow="Especialidad" titulo="Nutrición y dietética" phone={tel}
+        entradilla="Una alimentación equilibrada y adaptada a tus necesidades es clave para tu salud. Trabajamos con planes personalizados, en consulta o de forma online." />
+
+  <section class="wrap py-16 md:py-20" aria-labelledby="areas-titulo">
+    <Titulo eyebrow="En qué podemos ayudarte" id="areas-titulo"
+            intro="Cada plan parte de tu situación, tus gustos y tu ritmo de vida." />
+    <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {areas.map(([t, d], i) => (
+        <li class="card card-hover p-6">
+          <span class="num">0{i + 1}</span>
+          <h3 class="mt-2 text-[1.25rem] leading-tight">{t}</h3>
+          <p class="mt-2 text-[0.98rem] text-muted">{d}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="border-y border-line bg-sand" aria-labelledby="enfoque-titulo">
+    <div class="wrap grid gap-10 py-20 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+      <div>
+        <Titulo eyebrow="Nuestro enfoque" id="enfoque-titulo">Sin dietas milagro, <em class="italic text-brand-deep">con hábitos que se quedan</em></Titulo>
+        <div class="mt-6 max-w-[62ch] space-y-4 text-[1.08rem]">
+          <p>
+            Cada persona es única, así que trabajamos con un enfoque personalizado basado en la
+            educación nutricional, promoviendo hábitos sostenibles y alejándonos de las dietas milagro.
+          </p>
+          <p class="text-muted">
+            Te acompañamos en cada paso del proceso y ajustamos el plan según tus necesidades y
+            objetivos, ya sea de forma presencial o en consulta online.
+          </p>
+        </div>
+      </div>
+      <ul class="grid gap-4">
+        <li class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-soft">
+          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-mist text-brand-deep"><Icon name="pin" size={22} /></span>
+          <span><span class="block font-semibold text-deep">Consulta presencial</span><span class="text-[0.95rem] text-muted">En la clínica de Moraleja.</span></span>
+        </li>
+        <li class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-soft">
+          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-mist text-brand-deep"><Icon name="laptop" size={22} /></span>
+          <span><span class="block font-semibold text-deep">Consulta online</span><span class="text-[0.95rem] text-muted">Seguimiento a distancia, estés donde estés.</span></span>
+        </li>
+        <li class="flex items-center gap-4 rounded-3xl bg-white p-5 shadow-soft">
+          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-mist text-brand-deep"><Icon name="heart" size={22} /></span>
+          <span><span class="block font-semibold text-deep">Acompañamiento continuo</span><span class="text-[0.95rem] text-muted">Ajustamos el plan según avances.</span></span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="wrap mt-16">
+    <Especialista miembros={tania} phone={tel} />
+  </div>
+
+  <CtaBand titulo="Pide cita con Tania" texto="Nutrición tiene su propio teléfono. Llama para una primera consulta, presencial u online." />
+</Base>

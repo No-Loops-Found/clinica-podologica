@@ -1,0 +1,75 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Titulo from '../components/Titulo.astro';
+import Especialista from '../components/Especialista.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { PHONES } from '../consts';
+import { EQUIPO } from '../data/equipo';
+
+const areas = [
+  ['Dolores musculares y articulares', 'Contracturas, tensiones y sobrecargas musculares.'],
+  ['Problemas posturales', 'Desequilibrios que pueden causar molestias mantenidas.'],
+  ['Lumbalgias y cervicalgias', 'Sesiones específicas para el dolor de espalda y cuello.'],
+  ['Cefaleas tensionales', 'Trabajo sobre la musculatura implicada.'],
+  ['Lesiones deportivas', 'Recuperación y prevención en personas que entrenan.'],
+  ['Tensión acumulada', 'Técnicas de relajación muscular.'],
+];
+const tel = PHONES[2];
+const elena = EQUIPO.filter((m) => m.nombre.startsWith('Elena'));
+---
+<Base
+  title="Osteopatía y quiromasaje en Moraleja | Clínica Podológica Patricia Mateos"
+  description="Terapia manual en Moraleja: contracturas, sobrecargas, dolor de espalda y cuello, problemas posturales y recuperación de lesiones deportivas.">
+
+  <Hero eyebrow="Especialidad" titulo="Osteopatía y quiromasaje" phone={tel}
+        entradilla="Combinamos ambas técnicas manuales en sesiones adaptadas a cada persona, para aliviar molestias y mejorar la movilidad." />
+
+  <section class="wrap py-16 md:py-20" aria-labelledby="areas-titulo">
+    <Titulo eyebrow="En qué puede ayudarte una sesión" id="areas-titulo"
+            intro="Cada sesión se adapta a lo que necesitas ese día." />
+    <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {areas.map(([t, d], i) => (
+        <li class="card card-hover p-6">
+          <span class="num">0{i + 1}</span>
+          <h3 class="mt-2 text-[1.25rem] leading-tight">{t}</h3>
+          <p class="mt-2 text-[0.98rem] text-muted">{d}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="border-y border-line bg-sand" aria-labelledby="tecnicas-titulo">
+    <div class="wrap py-20">
+      <Titulo eyebrow="En qué consisten" id="tecnicas-titulo"
+              intro="Dos técnicas manuales que Elena combina en cada sesión según lo que necesita cada persona.">
+        Dos técnicas, <em class="italic text-brand-deep">una sesión</em>
+      </Titulo>
+      <div class="mt-10 grid gap-5 md:grid-cols-2">
+        <article class="rounded-3xl bg-white p-7 shadow-soft md:p-8">
+          <span class="flex h-12 w-12 items-center justify-center rounded-full bg-mist text-brand-deep"><Icon name="hand" size={24} /></span>
+          <h3 class="mt-5 text-[1.4rem]">Quiromasaje</h3>
+          <p class="mt-3 text-muted">
+            Técnica manual que ayuda a relajar la musculatura, mejorar la circulación y reducir la
+            tensión acumulada.
+          </p>
+        </article>
+        <article class="rounded-3xl bg-white p-7 shadow-soft md:p-8">
+          <span class="flex h-12 w-12 items-center justify-center rounded-full bg-mist text-brand-deep"><Icon name="spark" size={24} /></span>
+          <h3 class="mt-5 text-[1.4rem]">Osteopatía</h3>
+          <p class="mt-3 text-muted">
+            Terapia manual que aborda el cuerpo como un conjunto, atendiendo a la relación entre el
+            sistema muscular, óseo y nervioso.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap mt-16">
+    <Especialista miembros={elena} phone={tel} />
+  </div>
+
+  <CtaBand titulo="Reserva tu sesión con Elena" texto="Osteopatía tiene su propio teléfono. Llama y cuéntale qué te ocurre." />
+</Base>

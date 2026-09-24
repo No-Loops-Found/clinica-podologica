@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+/*
+ * Rediseño: paleta derivada del logo real (#3FA3AE) sobre fondos crema
+ * cálidos. El verde petróleo profundo se reserva para bloques de contraste,
+ * botones y el pie. El aqua de marca se usa solo en acentos y sobre fondo
+ * oscuro (no cumple contraste AA como texto sobre blanco).
+ */
+@theme {
+  --color-paper:      #FCFBF7;
+  --color-sand:       #F3EEE4;
+  --color-mist:       #E4F1F2;
+  --color-mist-deep:  #C9E3E5;
+  --color-brand:      #3FA3AE;
+  --color-brand-deep: #21717A;
+  --color-aqua-light: #8FD6DC;
+  --color-deep:       #0F3D44;
+  --color-abyss:      #0A2C31;
+  --color-ink:        #16262A;
+  --color-muted:      #52656A;
+  --color-line:       #E1E6E4;
+  --color-peach:      #F6DDC7;
+  --color-honey:      #E9C27B;
+
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-soft: 0 1px 2px rgb(15 61 68 / 0.05), 0 12px 32px -12px rgb(15 61 68 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(15 61 68 / 0.06), 0 28px 56px -20px rgb(15 61 68 / 0.30);
+  --shadow-ring: 0 0 0 1px rgb(15 61 68 / 0.06);
+
+  --radius-arch: 999px 999px 1.75rem 1.75rem;
+  --radius-blob: 62% 38% 46% 54% / 52% 45% 55% 48%;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    /* Base 17px: buena parte de las pacientes son personas mayores. */
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display);
+    font-variation-settings: "SOFT" 60;
+    color: var(--color-deep);
+    letter-spacing: -0.012em;
+    text-wrap: balance;
+  }
+  h1, h2, h3 { font-weight: 500; }
+  em, .font-display em { font-variation-settings: "SOFT" 100; }
+  p { text-wrap: pretty; }
+  a { color: inherit; }
+  strong { font-weight: 600; }
+  [id] { scroll-margin-top: 6rem; }
+  :focus-visible {
+    outline: 3px solid var(--color-brand-deep);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  ::selection { background: var(--color-mist-deep); color: var(--color-deep); }
+  img { font-style: italic; color: var(--color-muted); }
+}
+
+@layer components {
+  .wrap { @apply mx-auto w-full max-w-6xl px-5 sm:px-8; }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[0.78rem] font-bold uppercase tracking-[0.14em] text-brand-deep;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply inline-block h-1.5 w-1.5 rounded-full bg-brand;
+  }
+  .eyebrow-plain::before { display: none; }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[1rem] font-semibold leading-none whitespace-nowrap select-none;
+    transition: background-color .2s, color .2s, border-color .2s, transform .2s var(--ease-out-soft), box-shadow .2s;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { @apply bg-deep text-paper hover:bg-brand-deep; }
+  .btn-secondary { @apply border-2 border-deep/15 bg-white/70 text-deep hover:border-deep/40 hover:bg-white; }
+  .btn-tonal { @apply bg-mist text-deep hover:bg-mist-deep; }
+  .btn-light { @apply bg-paper text-deep hover:bg-white; }
+  .btn-outline-light { @apply border-2 border-paper/30 text-paper hover:border-paper/70 hover:bg-white/10; }
+  .btn-sm { @apply px-4 py-2.5 text-[0.92rem]; }
+  .btn-lg { @apply px-8 py-4 text-[1.08rem]; }
+
+  .card {
+    @apply rounded-3xl border border-line bg-white;
+    box-shadow: var(--shadow-soft);
+  }
+  .card-hover {
+    transition: transform .3s var(--ease-out-soft), box-shadow .3s var(--ease-out-soft), border-color .3s;
+  }
+  .card-hover:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); border-color: var(--color-mist-deep); }
+
+  .link {
+    @apply font-semibold text-brand-deep underline decoration-brand/50 decoration-2 underline-offset-[5px] transition-colors hover:text-deep hover:decoration-brand;
+  }
+  .link-arrow { @apply inline-flex items-center gap-1.5 font-semibold text-brand-deep transition-colors hover:text-deep; }
+  .link-arrow svg { transition: transform .25s var(--ease-out-soft); }
+  .link-arrow:hover svg { transform: translateX(4px); }
+
+  .bg-dots {
+    background-image: radial-gradient(var(--color-mist-deep) 1.2px, transparent 1.2px);
+    background-size: 22px 22px;
+  }
+  .bg-dots-dark {
+    background-image: radial-gradient(rgb(255 255 255 / 0.10) 1.2px, transparent 1.2px);
+    background-size: 22px 22px;
+  }
+
+  .num {
+    @apply font-display text-[0.95rem] font-semibold tabular-nums text-brand-deep;
+    font-variation-settings: "SOFT" 100;
+  }
+
+  /* Texto largo (legales, accesibilidad) */
+  .prose-legal { @apply max-w-[68ch]; }
+  .prose-legal h2 { @apply mt-10 text-[1.5rem]; }
+  .prose-legal h3 { @apply mt-6 text-[1.2rem]; }
+  .prose-legal p { @apply mt-4 text-muted; }
+  .prose-legal ul { @apply mt-4 space-y-2 text-muted; }
+  .prose-legal li { @apply border-l-2 border-mist-deep pl-4; }
+  .prose-legal a { @apply font-semibold text-brand-deep underline underline-offset-4; }
+}
+
+/* Acordeón de preguntas frecuentes */
+.faq summary { list-style: none; cursor: pointer; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq details .chev { transition: transform .3s var(--ease-out-soft); }
+.faq details[open] .chev { transform: rotate(180deg); }
+.faq details[open] summary { color: var(--color-brand-deep); }
+
+/* Entrada suave de los bloques al cargar (sin JS) */
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: rise .7s var(--ease-out-soft) both; }
+  .rise-2 { animation-delay: .12s; }
+  .rise-3 { animation-delay: .24s; }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
