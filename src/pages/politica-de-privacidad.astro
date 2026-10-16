@@ -1,8 +1,155 @@
 ---
 import Base from '../layouts/Base.astro';
 import Legal from '../components/Legal.astro';
+import Dato from '../components/Dato.astro';
+import { SITE, PHONES, LEGAL } from '../consts';
 ---
 <Base title="Política de privacidad | Clínica Podológica Patricia Mateos"
       description="Política de privacidad de la Clínica Podológica Patricia Mateos, Moraleja (Cáceres).">
-  <Legal titulo="Política de privacidad" />
+  <Legal titulo="Política de privacidad">
+    <p>
+      En esta página te explicamos qué datos personales tratamos, para qué y cuáles son tus
+      derechos, de acuerdo con el Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 de
+      Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).
+    </p>
+
+    <h2>1. Responsable del tratamiento</h2>
+    <ul>
+      <li><strong>Responsable:</strong> <Dato v={LEGAL.titular} /> ({SITE.name})</li>
+      <li><strong>NIF:</strong> <Dato v={LEGAL.nif} /></li>
+      <li><strong>Dirección:</strong> {SITE.street}, {SITE.postal} {SITE.city} ({SITE.province})</li>
+      <li><strong>Correo electrónico:</strong> <a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+      <li><strong>Teléfono:</strong> {PHONES[0].display}</li>
+      {LEGAL.dpd && <li><strong>Delegado de protección de datos:</strong> {LEGAL.dpd}</li>}
+    </ul>
+
+    <h2>2. Qué datos tratamos y para qué</h2>
+    <p>
+      Esta web no tiene formularios ni zona de usuarios: no recoge datos personales por sí misma.
+      Tratamos tus datos cuando te pones en contacto con nosotros o cuando eres paciente de la
+      clínica.
+    </p>
+
+    <h3>Citas y consultas por teléfono, WhatsApp o correo</h3>
+    <p>
+      Si nos llamas, nos escribes por WhatsApp o nos envías un correo, tratamos tu nombre, tu
+      teléfono o correo y el motivo de tu consulta para responderte y gestionar tu cita.
+    </p>
+    <p>
+      <strong>Base legal:</strong> la aplicación de medidas precontractuales a petición tuya y la
+      prestación del servicio que solicitas (art. 6.1.b RGPD).
+    </p>
+
+    <h3>Atención sanitaria e historia clínica</h3>
+    <p>
+      Si eres paciente, tratamos tus datos identificativos y de contacto y los datos de salud
+      necesarios para atenderte, que forman parte de tu historia clínica.
+    </p>
+    <p>
+      <strong>Base legal:</strong> la prestación de asistencia sanitaria (art. 9.2.h RGPD) y el
+      cumplimiento de las obligaciones legales de documentación clínica (art. 6.1.c RGPD y Ley
+      41/2002, básica reguladora de la autonomía del paciente).
+    </p>
+
+    <h3>Facturación</h3>
+    <p>
+      Tratamos los datos necesarios para emitir facturas y cumplir las obligaciones fiscales y
+      contables. <strong>Base legal:</strong> obligación legal (art. 6.1.c RGPD).
+    </p>
+
+    <h3>Estadísticas de visitas de la web</h3>
+    <p>
+      Usamos Vercel Web Analytics para saber cuántas visitas recibe la web y qué páginas son las
+      más consultadas. No usa cookies ni guarda información en tu dispositivo, y los datos son
+      anónimos y agregados: página visitada, página de procedencia, país o región aproximada, tipo
+      de dispositivo, sistema operativo y navegador. No permite identificarte. Más detalle en la
+      <a href="/politica-de-cookies/">política de cookies</a>.
+    </p>
+    <p>
+      <strong>Base legal:</strong> el interés legítimo de la clínica en conocer el uso de su web
+      para mejorarla (art. 6.1.f RGPD).
+    </p>
+
+    <h2>3. Sobre el uso de WhatsApp</h2>
+    <p>
+      WhatsApp es un servicio de WhatsApp Ireland Limited (grupo Meta), que trata los datos de
+      sus usuarios según su propia política de privacidad. Al escribirnos por WhatsApp aceptas
+      usar ese canal. Te recomendamos utilizarlo solo para pedir o cambiar citas y no enviar por
+      él información médica detallada: esa información la tratamos en la consulta.
+    </p>
+
+    <h2>4. Cuánto tiempo conservamos los datos</h2>
+    <ul>
+      <li>
+        <strong>Consultas y citas:</strong> el tiempo necesario para atenderte. Si no llegas a ser
+        paciente, los eliminamos cuando ya no son necesarios.
+      </li>
+      <li>
+        <strong>Historia clínica:</strong> el plazo que exige la normativa sanitaria, como mínimo
+        cinco años desde la fecha de alta de cada proceso asistencial (art. 17 de la Ley 41/2002).
+      </li>
+      <li>
+        <strong>Facturación:</strong> los plazos que marca la legislación fiscal y mercantil.
+      </li>
+      <li><strong>Estadísticas de visitas:</strong> se conservan solo de forma agregada y anónima.</li>
+    </ul>
+
+    <h2>5. A quién comunicamos tus datos</h2>
+    <p>
+      No cedemos tus datos a terceros, salvo obligación legal (por ejemplo, a la Administración
+      tributaria o a las autoridades sanitarias cuando la ley lo exige).
+    </p>
+    <p>
+      Algunos proveedores acceden a datos para prestarnos un servicio, siempre con contrato de
+      encargo del tratamiento y las garantías exigidas por el RGPD: el alojamiento de la web
+      (Vercel Inc.), el programa de gestión de la clínica y la asesoría fiscal y contable.
+    </p>
+
+    <h2>6. Transferencias internacionales</h2>
+    <p>
+      Vercel Inc. y el grupo Meta (WhatsApp) pueden tratar datos en Estados Unidos. Ambas
+      empresas están adheridas al Marco de Privacidad de Datos UE-EE. UU. (Data Privacy
+      Framework), reconocido por la Comisión Europea como garantía adecuada.
+    </p>
+
+    <h2>7. Tus derechos</h2>
+    <p>Puedes ejercer en cualquier momento los siguientes derechos:</p>
+    <ul>
+      <li>Acceder a tus datos personales.</li>
+      <li>Pedir que se corrijan si son inexactos.</li>
+      <li>Solicitar su supresión, cuando ya no sean necesarios y la ley no obligue a conservarlos (como ocurre con la historia clínica).</li>
+      <li>Oponerte al tratamiento o pedir que se limite.</li>
+      <li>Solicitar la portabilidad de los datos que nos has facilitado.</li>
+      <li>Retirar tu consentimiento, si el tratamiento se basa en él.</li>
+    </ul>
+    <p>
+      Para ejercerlos, escríbenos a <a href={`mailto:${SITE.email}`}>{SITE.email}</a> o por
+      correo postal a la dirección de la clínica, indicando qué derecho quieres ejercer y
+      acompañando una copia de tu documento de identidad.
+    </p>
+    <p>
+      Si consideras que no hemos atendido correctamente tu solicitud, puedes presentar una
+      reclamación ante la Agencia Española de Protección de Datos
+      (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>).
+    </p>
+
+    <h2>8. Menores de edad</h2>
+    <p>
+      Los datos de menores de 14 años solo se tratan con el consentimiento de sus padres, madres
+      o tutores legales, que serán quienes ejerzan sus derechos.
+    </p>
+
+    <h2>9. Seguridad</h2>
+    <p>
+      Aplicamos medidas técnicas y organizativas adecuadas para proteger tus datos frente a
+      pérdidas, accesos no autorizados o usos indebidos, con especial cuidado en los datos de
+      salud.
+    </p>
+
+    <h2>10. Cambios en esta política</h2>
+    <p>
+      Podemos actualizar esta política para adaptarla a cambios legales o en nuestros servicios.
+      La fecha de la última actualización figura al principio de la página.
+    </p>
+  </Legal>
 </Base>

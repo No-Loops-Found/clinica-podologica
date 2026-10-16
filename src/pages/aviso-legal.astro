@@ -1,8 +1,103 @@
 ---
 import Base from '../layouts/Base.astro';
 import Legal from '../components/Legal.astro';
+import Dato from '../components/Dato.astro';
+import { SITE, PHONES, LEGAL, COLEGIADAS } from '../consts';
 ---
 <Base title="Aviso legal | Clínica Podológica Patricia Mateos"
       description="Aviso legal de la Clínica Podológica Patricia Mateos, Moraleja (Cáceres).">
-  <Legal titulo="Aviso legal" />
+  <Legal titulo="Aviso legal">
+    <h2>1. Datos identificativos</h2>
+    <p>
+      En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la
+      Sociedad de la Información y de Comercio Electrónico (LSSI-CE), estos son los datos de la
+      titular de este sitio web:
+    </p>
+    <ul>
+      <li><strong>Titular:</strong> <Dato v={LEGAL.titular} /></li>
+      <li><strong>Nombre comercial:</strong> {SITE.name}</li>
+      <li><strong>NIF:</strong> <Dato v={LEGAL.nif} /></li>
+      <li><strong>Domicilio:</strong> {SITE.street}, {SITE.postal} {SITE.city} ({SITE.province})</li>
+      <li><strong>Correo electrónico:</strong> <a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+      <li><strong>Teléfono:</strong> {PHONES[0].display}</li>
+      <li>
+        <strong>Autorización sanitaria:</strong> centro sanitario autorizado por la Junta de
+        Extremadura con el número de registro <Dato v={LEGAL.registroSanitario} />.
+      </li>
+      {LEGAL.registroMercantil && <li><strong>Registro Mercantil:</strong> {LEGAL.registroMercantil}</li>}
+    </ul>
+
+    <h3>Profesionales sanitarias</h3>
+    <p>Las profesiones sanitarias reguladas que se ejercen en la clínica son las siguientes:</p>
+    <ul>
+      {COLEGIADAS.map((c) => (
+        <li>
+          <strong>{c.nombre}</strong>, {c.profesion.toLowerCase()}. <Dato v={c.titulo} />, título
+          expedido en España. Colegiada en el <Dato v={c.colegio} /> con el número <Dato v={c.numero} />.
+        </li>
+      ))}
+    </ul>
+    <p>
+      Su ejercicio se rige por la Ley 44/2003, de 21 de noviembre, de ordenación de las profesiones
+      sanitarias, y por los estatutos y el código deontológico de su colegio profesional, que
+      pueden consultarse en la web de cada colegio.
+    </p>
+
+    <h2>2. Objeto y aceptación</h2>
+    <p>
+      Este aviso legal regula el acceso y el uso del sitio web {SITE.domain.replace('https://', '')}.
+      Navegar por el sitio implica aceptar estas condiciones. Si no estás de acuerdo con ellas, te
+      pedimos que no lo utilices.
+    </p>
+
+    <h2>3. Información sanitaria</h2>
+    <p>
+      Los contenidos de esta web, incluidos los artículos del blog, tienen un fin exclusivamente
+      informativo. No sustituyen la valoración, el diagnóstico ni el tratamiento de una
+      profesional sanitaria. Ante cualquier problema de salud, pide cita para que podamos
+      valorarte de forma individual. En caso de urgencia, llama al 112.
+    </p>
+
+    <h2>4. Condiciones de uso</h2>
+    <p>
+      Te comprometes a hacer un uso adecuado y lícito del sitio web y de sus contenidos, y a no
+      emplearlos para actividades contrarias a la ley, a la buena fe o al orden público, ni para
+      dañar los sistemas de la clínica o de terceros.
+    </p>
+
+    <h2>5. Propiedad intelectual e industrial</h2>
+    <p>
+      Los textos, fotografías, logotipos, diseño y demás contenidos de este sitio pertenecen a la
+      titular o se usan con autorización de sus propietarios. Queda prohibida su reproducción,
+      distribución o transformación sin permiso expreso, salvo para uso personal y privado.
+    </p>
+
+    <h2>6. Responsabilidad</h2>
+    <p>
+      La clínica procura que la información publicada sea correcta y esté actualizada, pero no
+      garantiza la ausencia de errores ni la disponibilidad continua del sitio. No se hace
+      responsable de los daños que pudieran derivarse de interrupciones técnicas o del uso
+      indebido de la web.
+    </p>
+
+    <h2>7. Enlaces a otros sitios</h2>
+    <p>
+      La web incluye enlaces a servicios de terceros, como WhatsApp o Google Maps. Al abrirlos
+      sales de este sitio y pasas a estar sujeto a las condiciones y políticas de privacidad de
+      esos servicios, sobre los que la clínica no tiene control.
+    </p>
+
+    <h2>8. Protección de datos y cookies</h2>
+    <p>
+      El tratamiento de datos personales se explica en la <a href="/politica-de-privacidad/">política de privacidad</a>
+      y el uso de cookies, en la <a href="/politica-de-cookies/">política de cookies</a>.
+    </p>
+
+    <h2>9. Legislación aplicable y jurisdicción</h2>
+    <p>
+      Este aviso legal se rige por la legislación española. Para cualquier controversia, las partes
+      se someten a los juzgados y tribunales que correspondan según la ley. Si eres consumidor,
+      serán los de tu domicilio.
+    </p>
+  </Legal>
 </Base>
