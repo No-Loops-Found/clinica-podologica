@@ -1,0 +1,25 @@
+---
+/**
+ * Vista previa de un artículo en cualquier estado, tal como se verá en la web.
+ * Solo se abre con el enlace firmado y caducable que genera el panel.
+ */
+export const prerender = false;
+
+import Base from '../../../layouts/Base.astro';
+import Articulo from '../../../components/blog/Articulo.astro';
+import { obtenerPorId, relacionados, firmaValida } from '../../../lib/blog';
+
+const id = Astro.params.id ?? '';
+const q = Astro.url.searchParams;
+if (!/^\d+$/.test(id) || !firmaValida(id, q.get('exp'), q.get('sig'))) return new Response(null, { status: 404 });
+
+const post = await obtenerPorId(Number(id));
+if (!post) return new Response(null, { status: 404 });
+
+const otros = await relacionados(post);
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+---
+<Base title={`Vista previa: ${post.title}`} description={post.excerpt} noindex>
+  <Articulo post={post} relacionados={otros} vistaPrevia />
+</Base>

@@ -1,0 +1,63 @@
+---
+export const prerender = false;
+
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import TarjetaArticulo from '../../components/blog/TarjetaArticulo.astro';
+import { listarPublicados, CATEGORIAS, CACHE_PUBLICO, type Categoria, type Post } from '../../lib/blog';
+
+const param = Astro.url.searchParams.get('categoria');
+const categoria = param && param in CATEGORIAS ? (param as Categoria) : undefined;
+
+let posts: Post[] = [];
+let fallo = false;
+try {
+  posts = await listarPublicados({ categoria });
+  Astro.response.headers.set('Cache-Control', CACHE_PUBLICO);
+} catch (e) {
+  console.error('[blog] No se pudo leer Turso:', e);
+  fallo = true;
+  Astro.response.status = 503;
+  Astro.response.headers.set('Retry-After', '300');
+}
+
+const filtros = [
+  { href: '/blog/', label: 'Todos', activo: !categoria },
+  ...Object.entries(CATEGORIAS).map(([key, c]) => ({ href: `/blog/?categoria=${key}`, label: c.label, activo: categoria === key })),
+];
+---
+<Base title="Blog | Clínica Podológica Patricia Mateos"
+      description="Consejos de podología, nutrición y osteopatía escritos por las profesionales de la clínica, en Moraleja (Cáceres).">
+  <Hero eyebrow="Blog" titulo="Consejos para cuidarte"
+        entradilla="Artículos de podología, nutrición y osteopatía escritos por las profesionales de la clínica." />
+
+  <section class="wrap py-12 md:py-16" aria-label="Artículos">
+    <nav aria-label="Filtrar por especialidad">
+      <ul class="flex flex-wrap gap-2">
+        {filtros.map((f) => (
+          <li>
+            <a href={f.href} aria-current={f.activo ? 'page' : undefined}
+               class:list={[
+                 'inline-block rounded-full border px-4 py-2 text-[0.95rem] font-medium transition-colors',
+                 f.activo ? 'border-deep bg-deep text-paper' : 'border-line bg-white text-muted hover:border-deep/30 hover:text-deep',
+               ]}>{f.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    {fallo ? (
+      <p class="card mt-10 p-8 text-muted">
+        No hemos podido cargar los artículos en este momento. Vuelve a intentarlo en unos minutos.
+      </p>
+    ) : posts.length === 0 ? (
+      <p class="card mt-10 p-8 text-muted">
+        {categoria ? `Todavía no hay artículos de ${CATEGORIAS[categoria].label.toLowerCase()}.` : 'Muy pronto publicaremos los primeros artículos.'}
+      </p>
+    ) : (
+      <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {posts.map((p) => <li><TarjetaArticulo post={p} /></li>)}
+      </ul>
+    )}
+  </section>
+</Base>

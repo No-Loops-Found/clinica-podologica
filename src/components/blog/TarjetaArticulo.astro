@@ -1,0 +1,31 @@
+---
+/** Tarjeta de artículo para el listado del blog y los relacionados. */
+import { CATEGORIAS, fecha, type Post } from '../../lib/blog';
+import Icon from '../Icon.astro';
+interface Props { post: Post; nivel?: 'h2' | 'h3'; }
+const { post, nivel = 'h2' } = Astro.props;
+const Titulo = nivel;
+const cat = CATEGORIAS[post.category];
+const publicado = post.publishedAt ?? post.updatedAt;
+---
+<a href={`/blog/${post.slug}/`} class="card card-hover group flex h-full flex-col overflow-hidden">
+  {post.cover ? (
+    <img src={post.cover.url} alt="" width={post.cover.width} height={post.cover.height}
+         loading="lazy" decoding="async" class="aspect-[16/10] w-full object-cover" />
+  ) : (
+    <span class="flex aspect-[16/10] w-full items-center justify-center bg-mist text-brand-deep/50" aria-hidden="true">
+      <Icon name={cat.icon} size={56} />
+    </span>
+  )}
+  <span class="flex flex-1 flex-col p-6">
+    <span class="text-[0.78rem] font-bold uppercase tracking-[0.12em] text-brand-deep">{cat.label}</span>
+    <Titulo class="mt-2 text-[1.35rem] leading-tight">{post.title}</Titulo>
+    <span class="mt-3 line-clamp-3 text-[0.98rem] text-muted">{post.excerpt}</span>
+    <span class="mt-auto flex items-center justify-between gap-3 pt-5 text-[0.9rem] text-muted">
+      <time datetime={publicado.toISOString()}>{fecha(publicado)}</time>
+      <span class="inline-flex items-center gap-1 font-semibold text-brand-deep">
+        Leer <Icon name="arrow" size={15} class="transition-transform group-hover:translate-x-1" />
+      </span>
+    </span>
+  </span>
+</a>

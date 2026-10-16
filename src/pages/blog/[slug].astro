@@ -1,0 +1,51 @@
+---
+export const prerender = false;
+
+import Base from '../../layouts/Base.astro';
+import Articulo from '../../components/blog/Articulo.astro';
+import { obtenerPorSlug, relacionados, autora, CACHE_PUBLICO } from '../../lib/blog';
+import { SITE } from '../../consts';
+
+const post = await obtenerPorSlug(Astro.params.slug ?? '');
+// Sin cuerpo, Astro responde con la página 404 del sitio.
+if (!post) return new Response(null, { status: 404 });
+
+const otros = await relacionados(post);
+Astro.response.headers.set('Cache-Control', CACHE_PUBLICO);
+
+const url = new URL(Astro.url.pathname, Astro.site).href;
+const a = autora(post.authorKey);
+const schemas = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    ...(post.cover && { image: [new URL(post.cover.url, Astro.site).href] }),
+    datePublished: post.publishedAt?.toISOString(),
+    dateModified: post.updatedAt.toISOString(),
+    inLanguage: 'es-ES',
+    mainEntityOfPage: url,
+    author: { '@type': 'Person', name: a.nombre, jobTitle: a.rol, url: `${SITE.domain}/sobre-nosotros/` },
+    publisher: {
+      '@type': 'Organization',
+      '@id': `${SITE.domain}/#clinica`,
+      name: SITE.name,
+      logo: { '@type': 'ImageObject', url: `${SITE.domain}/img/logo.webp` },
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${SITE.domain}/` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE.domain}/blog/` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: url },
+    ],
+  },
+];
+---
+<Base title={`${post.title} | Clínica Podológica Patricia Mateos`} description={post.excerpt}
+      image={post.cover?.url} type="article" schemas={schemas}>
+  <Articulo post={post} relacionados={otros} />
+</Base>

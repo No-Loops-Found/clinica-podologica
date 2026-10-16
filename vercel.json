@@ -5,7 +5,7 @@
     { "source": "/inicio", "destination": "/", "permanent": true },
     { "source": "/nutricion", "destination": "/nutricionista/", "permanent": true },
     { "source": "/osteopatia", "destination": "/osteopatia-y-quiromasaje/", "permanent": true },
-    { "source": "/blog/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug", "destination": "/:slug/", "permanent": true }
+    { "source": "/blog/:year(\\d{4})/:month(\\d{2})/:day(\\d{2})/:slug", "destination": "/blog/:slug/", "permanent": true }
   ],
   "headers": [
     {

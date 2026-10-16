@@ -8,3 +8,6 @@ dist/
 
 # backup del WordPress anterior
 *.tar.gz
+
+# base de datos local del blog
+blog-local.db*

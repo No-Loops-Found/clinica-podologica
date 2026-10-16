@@ -134,6 +134,22 @@
   .prose-legal ul { @apply mt-4 space-y-2 text-muted; }
   .prose-legal li { @apply border-l-2 border-mist-deep pl-4; }
   .prose-legal a { @apply font-semibold text-brand-deep underline underline-offset-4; }
+
+  /* Cuerpo de los artículos del blog: HTML que llega del panel de administración. */
+  .prose-blog { @apply text-[1.1rem] leading-[1.75]; }
+  .prose-blog > * + * { @apply mt-5; }
+  .prose-blog h2 { @apply mt-12 text-[1.75rem] leading-tight md:text-[2rem]; }
+  .prose-blog h3 { @apply mt-9 text-[1.35rem] leading-snug; }
+  .prose-blog h4 { @apply mt-7 font-sans text-[1.1rem] font-semibold text-deep; }
+  .prose-blog h2 + *, .prose-blog h3 + *, .prose-blog h4 + * { @apply mt-3; }
+  .prose-blog a { @apply font-semibold text-brand-deep underline decoration-brand/50 decoration-2 underline-offset-4 hover:text-deep; }
+  .prose-blog ul { @apply list-disc space-y-2 pl-6 marker:text-brand; }
+  .prose-blog ol { @apply list-decimal space-y-2 pl-6 marker:font-semibold marker:text-brand-deep; }
+  .prose-blog blockquote { @apply border-l-4 border-brand bg-mist/60 px-6 py-4 font-display text-[1.25rem] italic text-deep; }
+  .prose-blog img { @apply h-auto w-full rounded-2xl; }
+  .prose-blog figure { @apply my-9; }
+  .prose-blog figcaption { @apply mt-2 text-center text-[0.92rem] text-muted; }
+  .prose-blog hr { @apply my-10 border-line; }
 }
 
 /* Acordeón de preguntas frecuentes */

@@ -1,4 +1,6 @@
 export type Miembro = {
+  /** Clave estable: la usa el blog para la autora (author_key en la base de datos). */
+  key: 'patricia' | 'celia' | 'tania' | 'elena';
   nombre: string;
   rol: string;
   foto?: string;
@@ -12,6 +14,7 @@ export type Miembro = {
 /** Textos tomados de la web actual, revisados y sin cambiar el fondo. */
 export const EQUIPO: Miembro[] = [
   {
+    key: 'patricia',
     nombre: 'Patricia Mateos',
     rol: 'Podóloga y directora de la clínica',
     foto: '/img/patricia.webp',
@@ -27,6 +30,7 @@ export const EQUIPO: Miembro[] = [
     telDisplay: '633 939 293',
   },
   {
+    key: 'celia',
     nombre: 'Celia Castellano',
     rol: 'Podóloga',
     titulacion: ['Graduada en Podología por la Universidad de Extremadura (2019-2023)'],
@@ -35,6 +39,7 @@ export const EQUIPO: Miembro[] = [
     telDisplay: '633 939 293',
   },
   {
+    key: 'tania',
     nombre: 'Tania Zamarreño',
     rol: 'Dietista-nutricionista',
     titulacion: ['Dietista-nutricionista desde 2013', 'En consulta propia desde 2015'],
@@ -43,6 +48,7 @@ export const EQUIPO: Miembro[] = [
     telDisplay: '625 640 976',
   },
   {
+    key: 'elena',
     nombre: 'Elena Pérez',
     rol: 'Quiromasajista y osteópata',
     foto: '/img/elena.jpg',

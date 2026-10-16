@@ -2,7 +2,8 @@
 import { NAV, PHONES, SITE } from '../consts';
 import Icon from './Icon.astro';
 const path = Astro.url.pathname;
-const isActive = (href: string) => path === href;
+// startsWith: los artículos (/blog/...) marcan «Blog» como sección activa.
+const isActive = (href: string) => path.startsWith(href);
 ---
 <!-- Barra superior: dirección y los tres teléfonos. Solo en pantallas grandes. -->
 <div class="hidden bg-deep text-[0.86rem] text-paper/85 lg:block">

@@ -12,13 +12,24 @@ import CallBar from '../components/CallBar.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 import { SITE, PHONES } from '../consts';
 
-interface Props { title: string; description: string; }
-const { title, description } = Astro.props;
+interface Props {
+  title: string;
+  description: string;
+  /** Imagen al compartir (ruta o URL). Por defecto, la foto de Patricia. */
+  image?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  /** Datos estructurados adicionales (artículo, migas de pan...). */
+  schemas?: object[];
+}
+const { title, description, image = '/img/patricia.webp', type = 'website', noindex = false, schemas = [] } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(image, Astro.site).href;
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'MedicalClinic',
+  '@id': `${SITE.domain}/#clinica`,
   name: SITE.name,
   url: SITE.domain,
   telephone: PHONES[0].tel,
@@ -43,17 +54,19 @@ const schema = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" href="/img/favicon.png" />
     <link rel="apple-touch-icon" href="/img/favicon.png" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={type} />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={`${SITE.domain}/img/patricia.webp`} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta property="og:locale" content="es_ES" />
     <meta name="theme-color" content="#0F3D44" />
-    <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+    {[schema, ...schemas].map((s) => <script is:inline type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>
   <body class="pb-[4.25rem] md:pb-0">
     <a href="#contenido"

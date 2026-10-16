@@ -42,6 +42,7 @@ export const NAV = [
   { href: '/nutricionista/', label: 'Nutrición' },
   { href: '/osteopatia-y-quiromasaje/', label: 'Osteopatía' },
   { href: '/sobre-nosotros/', label: 'Equipo' },
+  { href: '/blog/', label: 'Blog' },
   { href: '/contacto/', label: 'Contacto' },
 ];
 

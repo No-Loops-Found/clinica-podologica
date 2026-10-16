@@ -1,0 +1,110 @@
+---
+/**
+ * Página de un artículo. La usan la ruta pública (/blog/[slug]/) y la vista
+ * previa firmada que se abre desde el panel de administración.
+ */
+import { CATEGORIAS, autora, fecha, minutosLectura, type Post } from '../../lib/blog';
+import { waLink } from '../../consts';
+import Avatar from '../Avatar.astro';
+import Icon from '../Icon.astro';
+import TarjetaArticulo from './TarjetaArticulo.astro';
+interface Props { post: Post; relacionados: Post[]; vistaPrevia?: boolean; }
+const { post, relacionados, vistaPrevia = false } = Astro.props;
+
+const cat = CATEGORIAS[post.category];
+const a = autora(post.authorKey);
+const publicado = post.publishedAt ?? post.updatedAt;
+// Solo se menciona la actualización si es posterior al día de publicación.
+const actualizado = post.updatedAt.getTime() - publicado.getTime() > 864e5;
+---
+{vistaPrevia && (
+  <div class="bg-honey/40 text-deep">
+    <p class="wrap flex items-center gap-2 py-3 text-[0.95rem] font-semibold">
+      <Icon name="eye" size={18} />
+      Vista previa:
+      {post.status === 'draft'
+        ? 'este artículo es un borrador y no se ve en la web.'
+        : publicado > new Date()
+          ? `se publicará el ${fecha(publicado)}.`
+          : 'este artículo ya está publicado.'}
+    </p>
+  </div>
+)}
+
+<article>
+  <header class="border-b border-line bg-sand">
+    <div class="wrap py-10 md:py-14">
+      <nav aria-label="Migas de pan">
+        <ol class="flex flex-wrap items-center gap-2 text-[0.9rem] text-muted">
+          <li><a href="/" class="hover:text-deep">Inicio</a></li>
+          <li aria-hidden="true">/</li>
+          <li><a href="/blog/" class="hover:text-deep">Blog</a></li>
+        </ol>
+      </nav>
+      <a href={cat.href} class="eyebrow mt-8 hover:text-deep">{cat.label}</a>
+      <h1 class="mt-3 max-w-[24ch] text-[2.3rem] leading-[1.08] md:text-[3.1rem]">{post.title}</h1>
+      <p class="mt-5 max-w-[60ch] text-[1.15rem] text-muted md:text-[1.22rem]">{post.excerpt}</p>
+      <div class="mt-7 flex items-center gap-3">
+        <Avatar miembro={a} class="h-12 w-12" text="text-base" />
+        <p class="leading-tight">
+          <span class="block font-semibold text-deep">{a.nombre}</span>
+          <span class="text-[0.9rem] text-muted">
+            <time datetime={publicado.toISOString()}>{fecha(publicado)}</time> · {minutosLectura(post.bodyHtml)} min de lectura
+          </span>
+        </p>
+      </div>
+    </div>
+  </header>
+
+  {post.cover && (
+    <div class="wrap pt-10">
+      <img src={post.cover.url} alt={post.cover.alt} width={post.cover.width} height={post.cover.height}
+           fetchpriority="high" decoding="async"
+           class="mx-auto aspect-[16/9] w-full max-w-4xl rounded-3xl object-cover shadow-soft" />
+    </div>
+  )}
+
+  <div class="wrap py-12 md:py-14">
+    <div class="prose-blog mx-auto max-w-[68ch]" set:html={post.bodyHtml} />
+
+    <div class="mx-auto mt-12 max-w-[68ch] space-y-5">
+      <p class="text-[0.92rem] text-muted">
+        {actualizado && <>Actualizado el <time datetime={post.updatedAt.toISOString()}>{fecha(post.updatedAt)}</time>. </>}
+        Este artículo es informativo y no sustituye la valoración de una profesional sanitaria.
+      </p>
+
+      <aside class="card flex items-start gap-4 p-6" aria-label="Sobre la autora">
+        <Avatar miembro={a} class="h-16 w-16" />
+        <div>
+          <p class="text-[0.78rem] font-bold uppercase tracking-[0.12em] text-brand-deep">Escrito por</p>
+          <p class="mt-1 font-display text-[1.3rem] text-deep">{a.nombre}</p>
+          <p class="text-[0.95rem] text-muted">{a.rol}. {a.titulacion[0]}.</p>
+          <a href="/sobre-nosotros/" class="link-arrow mt-2 text-[0.95rem]">Conoce al equipo <Icon name="arrow" size={16} /></a>
+        </div>
+      </aside>
+
+      <aside class="relative overflow-hidden rounded-3xl bg-deep p-6 text-paper md:p-8" aria-label="Pide cita">
+        <div class="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-brand/30 blur-3xl" aria-hidden="true"></div>
+        <p class="relative font-display text-[1.5rem] leading-tight text-white">¿Quieres que lo veamos en consulta?</p>
+        <p class="relative mt-2 text-paper/75">Pide cita en {cat.phone.area.toLowerCase()} con {cat.phone.who}.</p>
+        <div class="relative mt-5 flex flex-wrap gap-3">
+          <a href={`tel:${cat.phone.tel}`} class="btn btn-light tabular-nums">
+            <Icon name="phone" size={18} /> Llamar al {cat.phone.display}
+          </a>
+          <a href={waLink(cat.phone)} target="_blank" rel="noopener" class="btn btn-outline-light">
+            <Icon name="whatsapp" size={18} /> WhatsApp
+          </a>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  {relacionados.length > 0 && (
+    <section class="wrap" aria-labelledby="relacionados-titulo">
+      <h2 id="relacionados-titulo" class="text-[1.8rem] leading-tight">Sigue leyendo</h2>
+      <ul class="mt-6 grid gap-5 md:grid-cols-3">
+        {relacionados.map((p) => <li><TarjetaArticulo post={p} nivel="h3" /></li>)}
+      </ul>
+    </section>
+  )}
+</article>

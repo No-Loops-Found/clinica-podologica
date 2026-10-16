@@ -1,7 +1,8 @@
 # Clínica Podológica Patricia Mateos
 
-Web estática en Astro 5 + Tailwind 4, pensada para desplegarse en Vercel.
+Web en Astro 5 + Tailwind 4, pensada para desplegarse en Vercel.
 Porta el contenido del WordPress anterior (tema Bricks) sin depender de él.
+Todo es estático salvo el blog, que lee los artículos de Turso (ver «Blog»).
 
 ## Arrancar
 
@@ -12,7 +13,13 @@ npm run build    # genera dist/
 npm run preview
 ```
 
-No hay base de datos ni servidor: el resultado es HTML estático.
+Todas las páginas se generan como HTML estático, salvo las del blog. Para que
+el blog funcione en local, crea la base de datos de ejemplo:
+
+```bash
+cp .env.example .env
+npm run blog:db-local   # crea blog-local.db con artículos de prueba
+```
 
 ## Desplegar en Vercel
 
@@ -49,9 +56,36 @@ src/
     Avatar.astro         Foto o iniciales
     Icon.astro           Iconos SVG en línea (sin librerías)
     Legal.astro          Plantilla de páginas legales
+    blog/                Página de artículo y tarjeta del listado
+  lib/blog.ts            Lectura de artículos desde Turso, saneado del HTML y vista previa
   pages/                 Una página por ruta
+  pages/blog/            Blog (renderizado en cada petición, no estático)
+docs/
+  blog-schema.sql        Esquema de la base de datos del blog (contrato con el panel)
+  panel-admin.md         Instrucciones para construir el panel de administración
 public/img/              Imágenes reales recuperadas del WordPress
 ```
+
+## Blog
+
+Los artículos viven en una base de datos Turso y se escriben desde un panel
+aparte (`admin.podologiapatriciamateos.com`, otro proyecto). Así publicar no
+exige commits ni despliegues, que en Vercel Hobby con repo privado solo puede
+hacer el dueño de la cuenta.
+
+- `/blog/`, `/blog/<slug>/` y `/sitemap-blog.xml` se renderizan en el servidor en
+  cada petición (`prerender = false`) y Vercel las cachea 5 minutos. El resto del
+  sitio sigue siendo estático.
+- La web solo lee, con un token de **solo lectura**. El HTML de los artículos se
+  vuelve a sanear al mostrarlo.
+- `/blog/vista-previa/<id>/` muestra borradores con un enlace firmado y
+  caducable que genera el panel (`BLOG_PREVIEW_SECRET`, igual en ambos).
+- Las URLs de entradas del WordPress (`/blog/AAAA/MM/DD/slug`) redirigen a
+  `/blog/slug/`: si se recrea un artículo antiguo con el mismo slug, recupera
+  sus enlaces.
+
+Variables de entorno en Vercel: `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN` y
+`BLOG_PREVIEW_SECRET` (ver `.env.example`).
 
 ## Decisiones de diseño
 
