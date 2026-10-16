@@ -71,15 +71,19 @@ public/img/              Imágenes reales recuperadas del WordPress
   para dar identidad sin imágenes de banco.
 - **Logos de financiación europea** en la franja más oscura del pie: los PNG son
   blancos sobre transparente y no se ven sobre fondo claro.
-- **Sin cookies ni scripts de terceros.** No hay Google Maps incrustado ni
-  analítica, así que de momento no hace falta banner de cookies.
+- **Sin cookies ni scripts de terceros.** No hay Google Maps incrustado. Las
+  visitas se miden con Vercel Web Analytics, que no usa cookies ni guarda nada
+  en el dispositivo y se sirve desde el propio dominio, así que no se muestra
+  banner de cookies. Hay que activarlo en el panel de Vercel (Analytics → Enable).
 - **Sin formulario de contacto.** Ver más abajo.
 
 ## Pendiente antes de publicar
 
-1. **Textos legales.** Aviso legal, privacidad y cookies están como plantilla:
-   el WordPress los generaba con un plugin y no venían en la copia. Hacen falta
-   denominación fiscal, NIF, registro sanitario del centro y números de colegiada.
+1. **Datos de los textos legales.** Aviso legal, privacidad y cookies ya están
+   redactados, pero faltan los datos entre corchetes de `LEGAL` y `COLEGIADAS` en
+   `src/consts.ts` (titular, NIF, registro sanitario, números de colegiada...).
+   Se resaltan en la web y cada página legal avisa mientras quede alguno.
+   Conviene que una asesoría revise los textos antes de publicarlos.
 2. **Formulario de cita.** El WordPress recogía email, teléfono, servicio y
    franja horaria. No se ha portado a propósito: en una web sanitaria necesita
    base legal, consentimiento y un destino seguro. Decidir con la clínica.

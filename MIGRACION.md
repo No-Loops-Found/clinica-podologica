@@ -24,8 +24,9 @@ el dominio antiguo sea una correspondencia directa de host.
 
 - **Formulario de cita.** Decisión pendiente con la clínica.
 - **Página «Personalizar cookies».** La generaba el plugin Adapta RGPD. El sitio
-  nuevo no usa cookies ni analítica, así que no tiene sentido mantenerla. Si más
-  adelante se añade analítica, habrá que recuperar el banner.
+  nuevo no usa cookies, así que no tiene sentido mantenerla. La analítica es
+  Vercel Web Analytics, que funciona sin cookies; si algún día se añade una que
+  las use, habrá que recuperar el banner.
 - **GTranslate.** El WordPress tenía traducción automática. No se ha portado: la
   traducción automática de contenido sanitario es arriesgada y además generaba
   URLs duplicadas.

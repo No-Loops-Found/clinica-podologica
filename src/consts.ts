@@ -37,6 +37,30 @@ export const waLink = (p: (typeof PHONES)[number]) =>
     `Hola, me gustaría pedir cita de ${p.area.toLowerCase()}.`
   )}`;
 
+/**
+ * Datos de los textos legales. Lo que va entre corchetes está pendiente:
+ * se resalta en la web y Legal.astro muestra un aviso mientras quede alguno.
+ */
+export const LEGAL = {
+  titular: '[Nombre y apellidos de la titular o razón social]',
+  nif: '[NIF]',
+  registroSanitario: '[Nº de registro sanitario del centro]',
+  actualizado: '[Fecha de última actualización]',
+  // Solo si la titular es una sociedad (S.L., etc.): datos de inscripción en el Registro Mercantil.
+  registroMercantil: null as string | null,
+  // Delegado de protección de datos: solo si la clínica está obligada (art. 34 LOPDGDD). null = no hay.
+  dpd: null as string | null,
+};
+
+/** Profesiones sanitarias reguladas (LSSI art. 10.1.f). Osteopatía y quiromasaje no lo son. */
+export const COLEGIADAS = [
+  { nombre: 'Patricia Mateos', profesion: 'Podóloga', titulo: 'Graduada en Podología por la Universidad de Extremadura', colegio: 'Colegio Oficial de Podólogos de Extremadura', numero: '[Nº de colegiada]' },
+  { nombre: 'Celia Castellano', profesion: 'Podóloga', titulo: 'Graduada en Podología por la Universidad de Extremadura', colegio: 'Colegio Oficial de Podólogos de Extremadura', numero: '[Nº de colegiada]' },
+  { nombre: 'Tania Zamarreño', profesion: 'Dietista-nutricionista', titulo: '[Titulación universitaria]', colegio: '[Colegio profesional]', numero: '[Nº de colegiada]' },
+];
+
+export const pendiente = (v: string | null) => v?.startsWith('[') ?? false;
+
 export const NAV = [
   { href: '/podologia/', label: 'Podología' },
   { href: '/nutricionista/', label: 'Nutrición' },

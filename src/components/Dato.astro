@@ -1,0 +1,7 @@
+---
+/** Dato de los textos legales. Si sigue entre corchetes, se resalta para que se vea que falta. */
+import { pendiente } from '../consts';
+interface Props { v: string; }
+const { v } = Astro.props;
+---
+{pendiente(v) ? <mark class="rounded bg-honey/45 px-1 font-semibold text-deep">{v}</mark> : v}
