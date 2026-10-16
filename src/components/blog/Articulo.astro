@@ -17,6 +17,11 @@ const publicado = post.publishedAt ?? post.updatedAt;
 // Solo se menciona la actualización si es posterior al día de publicación.
 const actualizado = post.updatedAt.getTime() - publicado.getTime() > 864e5;
 ---
+<!-- Barra de progreso de lectura: avanza con el texto del artículo, no con la página. -->
+<div class="pointer-events-none fixed inset-x-0 top-0 z-50 h-1" aria-hidden="true">
+  <div id="progreso-lectura" class="h-full origin-left bg-brand" style="transform: scaleX(0)"></div>
+</div>
+
 {vistaPrevia && (
   <div class="bg-honey/40 text-deep">
     <p class="wrap flex items-center gap-2 py-3 text-[0.95rem] font-semibold">
@@ -56,51 +61,43 @@ const actualizado = post.updatedAt.getTime() - publicado.getTime() > 864e5;
     </div>
   </header>
 
-  {post.cover && (
-    <div class="wrap pt-10">
-      <img src={post.cover.url} alt={post.cover.alt} width={post.cover.width} height={post.cover.height}
-           fetchpriority="high" decoding="async"
-           class="mx-auto aspect-[16/9] w-full max-w-4xl rounded-3xl object-cover shadow-soft" />
-    </div>
-  )}
+  <!-- Mismo ancho que la cabecera y el pie: texto a la izquierda (con un ancho de
+       línea cómodo de leer) y la tarjeta de cita fija a la derecha. -->
+  <div class="wrap grid gap-12 py-10 md:py-14 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16">
+    <div class="min-w-0">
+      {post.cover && (
+        <img src={post.cover.url} alt={post.cover.alt} width={post.cover.width} height={post.cover.height}
+             fetchpriority="high" decoding="async"
+             class="mb-10 aspect-[16/9] w-full rounded-3xl object-cover shadow-soft" />
+      )}
+      <div id="cuerpo-articulo" class="prose-blog max-w-[70ch]" set:html={post.bodyHtml} />
 
-  <div class="wrap py-12 md:py-14">
-    <div class="prose-blog mx-auto max-w-[68ch]" set:html={post.bodyHtml} />
-
-    <div class="mx-auto mt-12 max-w-[68ch] space-y-5">
-      <p class="text-[0.92rem] text-muted">
+      <hr class="mt-14 border-line" />
+      <p class="mt-6 max-w-[70ch] text-[0.92rem] text-muted">
         {actualizado && <>Actualizado el <time datetime={post.updatedAt.toISOString()}>{fecha(post.updatedAt)}</time>. </>}
         Este artículo es informativo y no sustituye la valoración de una profesional sanitaria.
       </p>
+    </div>
 
-      <aside class="card flex items-start gap-4 p-6" aria-label="Sobre la autora">
-        <Avatar miembro={a} class="h-16 w-16" />
-        <div>
-          <p class="text-[0.78rem] font-bold uppercase tracking-[0.12em] text-brand-deep">Escrito por</p>
-          <p class="mt-1 font-display text-[1.3rem] text-deep">{a.nombre}</p>
-          <p class="text-[0.95rem] text-muted">{a.rol}. {a.titulacion[0]}.</p>
-          <a href="/sobre-nosotros/" class="link-arrow mt-2 text-[0.95rem]">Conoce al equipo <Icon name="arrow" size={16} /></a>
-        </div>
-      </aside>
-
-      <aside class="relative overflow-hidden rounded-3xl bg-deep p-6 text-paper md:p-8" aria-label="Pide cita">
-        <div class="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-brand/30 blur-3xl" aria-hidden="true"></div>
-        <p class="relative font-display text-[1.5rem] leading-tight text-white">¿Quieres que lo veamos en consulta?</p>
-        <p class="relative mt-2 text-paper/75">Pide cita en {cat.phone.area.toLowerCase()} con {cat.phone.who}.</p>
-        <div class="relative mt-5 flex flex-wrap gap-3">
-          <a href={`tel:${cat.phone.tel}`} class="btn btn-light tabular-nums">
+    <aside class="lg:sticky lg:top-28 lg:self-start" aria-label="Pide cita">
+      <div class="rounded-3xl border border-mist-deep bg-mist p-6 md:p-7">
+        <p class="eyebrow">Pide tu cita</p>
+        <p class="mt-3 font-display text-[1.45rem] leading-tight text-deep">¿Quieres que lo veamos en consulta?</p>
+        <p class="mt-2 text-[0.98rem] text-muted">Pide cita en {cat.phone.area.toLowerCase()} con {cat.phone.who}.</p>
+        <div class="mt-5 grid gap-2.5 sm:flex sm:flex-wrap lg:grid">
+          <a href={`tel:${cat.phone.tel}`} class="btn btn-primary tabular-nums">
             <Icon name="phone" size={18} /> Llamar al {cat.phone.display}
           </a>
-          <a href={waLink(cat.phone)} target="_blank" rel="noopener" class="btn btn-outline-light">
+          <a href={waLink(cat.phone)} target="_blank" rel="noopener" class="btn btn-secondary">
             <Icon name="whatsapp" size={18} /> WhatsApp
           </a>
         </div>
-      </aside>
-    </div>
+      </div>
+    </aside>
   </div>
 
   {relacionados.length > 0 && (
-    <section class="wrap" aria-labelledby="relacionados-titulo">
+    <section class="wrap mt-6" aria-labelledby="relacionados-titulo">
       <h2 id="relacionados-titulo" class="text-[1.8rem] leading-tight">Sigue leyendo</h2>
       <ul class="mt-6 grid gap-5 md:grid-cols-3">
         {relacionados.map((p) => <li><TarjetaArticulo post={p} nivel="h3" /></li>)}
@@ -108,3 +105,27 @@ const actualizado = post.updatedAt.getTime() - publicado.getTime() > 864e5;
     </section>
   )}
 </article>
+
+<script>
+  const barra = document.getElementById('progreso-lectura');
+  const cuerpo = document.getElementById('cuerpo-articulo');
+
+  if (barra && cuerpo) {
+    let pedido = false;
+    // 0 cuando el texto asoma por abajo de la pantalla; 1 cuando se ve su última línea.
+    const actualizar = () => {
+      pedido = false;
+      const r = cuerpo.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, (innerHeight - r.top) / r.height));
+      barra.style.transform = `scaleX(${p})`;
+    };
+    const pedir = () => {
+      if (pedido) return;
+      pedido = true;
+      requestAnimationFrame(actualizar);
+    };
+    addEventListener('scroll', pedir, { passive: true });
+    addEventListener('resize', pedir);
+    actualizar();
+  }
+</script>
