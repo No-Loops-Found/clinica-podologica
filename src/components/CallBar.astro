@@ -1,10 +1,11 @@
 ---
 /**
- * Barra fija inferior en móvil. «Llamar» despliega los tres teléfonos,
- * porque cada especialidad atiende el suyo.
+ * Barra fija inferior en móvil. «Llamar» y «WhatsApp» despliegan los tres
+ * teléfonos, porque cada especialidad atiende el suyo.
  */
 import { PHONES } from '../consts';
 import Icon from './Icon.astro';
+import WhatsAppList from './WhatsAppList.astro';
 ---
 <div id="callbar" class="fixed inset-x-0 bottom-0 z-50 md:hidden">
   <div id="call-sheet" hidden class="mx-3 mb-2 rounded-3xl border border-line bg-white p-2 shadow-lift">
@@ -26,15 +27,25 @@ import Icon from './Icon.astro';
       ))}
     </ul>
   </div>
-  <div class="grid grid-cols-2 border-t border-line bg-paper/95 backdrop-blur" style="padding-bottom: env(safe-area-inset-bottom)">
+  <div id="wa-sheet" hidden class="mx-3 mb-2 rounded-3xl border border-line bg-white p-2 shadow-lift">
+    <p class="px-3 pb-1 pt-2 text-[0.78rem] font-bold uppercase tracking-wider text-brand-deep">¿A quién quieres escribir?</p>
+    <WhatsAppList />
+  </div>
+  <div class="grid grid-cols-3 border-t border-line bg-paper/95 text-[0.88rem] leading-tight backdrop-blur" style="padding-bottom: env(safe-area-inset-bottom)">
     <button id="call-btn" type="button"
-            class="flex items-center justify-center gap-2 bg-deep py-4 font-semibold text-paper"
+            class="flex flex-col items-center justify-center gap-1 bg-deep py-2.5 font-semibold text-paper"
             aria-expanded="false" aria-controls="call-sheet">
-      <Icon name="phone" size={20} />
+      <Icon name="phone" size={22} />
       Llamar
     </button>
-    <a href="/contacto/" class="flex items-center justify-center gap-2 py-4 font-semibold text-deep">
-      <Icon name="pin" size={20} class="text-brand-deep" />
+    <button id="wa-btn" type="button"
+            class="flex flex-col items-center justify-center gap-1 border-r border-line py-2.5 font-semibold text-deep"
+            aria-expanded="false" aria-controls="wa-sheet">
+      <Icon name="whatsapp" size={22} class="text-brand-deep" />
+      WhatsApp
+    </button>
+    <a href="/contacto/" class="flex flex-col items-center justify-center gap-1 py-2.5 font-semibold text-deep">
+      <Icon name="pin" size={22} class="text-brand-deep" />
       Cómo llegar
     </a>
   </div>
@@ -42,18 +53,26 @@ import Icon from './Icon.astro';
 
 <script>
   const bar = document.getElementById('callbar');
-  const btn = document.getElementById('call-btn');
-  const sheet = document.getElementById('call-sheet');
+  const toggles = [
+    [document.getElementById('call-btn'), document.getElementById('call-sheet')],
+    [document.getElementById('wa-btn'), document.getElementById('wa-sheet')],
+  ];
 
-  function setOpen(open: boolean) {
-    if (!btn || !sheet) return;
-    btn.setAttribute('aria-expanded', String(open));
-    sheet.hidden = !open;
+  // Solo un panel abierto a la vez; null los cierra todos.
+  function setOpen(target: HTMLElement | null) {
+    for (const [btn, sheet] of toggles) {
+      if (!btn || !sheet) continue;
+      const open = btn === target;
+      btn.setAttribute('aria-expanded', String(open));
+      sheet.hidden = !open;
+    }
   }
 
-  btn?.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+  for (const [btn] of toggles) {
+    btn?.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') === 'true' ? null : btn));
+  }
   document.addEventListener('click', (e) => {
-    if (bar && !bar.contains(e.target as Node)) setOpen(false);
+    if (bar && !bar.contains(e.target as Node)) setOpen(null);
   });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(null); });
 </script>

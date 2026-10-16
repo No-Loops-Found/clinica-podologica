@@ -6,7 +6,7 @@ import Titulo from '../components/Titulo.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Avatar from '../components/Avatar.astro';
 import Icon from '../components/Icon.astro';
-import { SITE, PHONES } from '../consts';
+import { SITE, PHONES, waLink } from '../consts';
 import { SERVICIOS } from '../data/servicios';
 import { EQUIPO } from '../data/equipo';
 
@@ -47,6 +47,11 @@ const patricia = EQUIPO[0];
           <a href={`tel:${PHONES[0].tel}`} class="btn btn-primary btn-lg tabular-nums">
             <Icon name="phone" size={20} />
             Llamar al {PHONES[0].display}
+          </a>
+          <a href={waLink(PHONES[0])} target="_blank" rel="noopener"
+             class="btn btn-secondary btn-lg h-[3.4rem] w-[3.4rem] p-0"
+             aria-label={`Escribir por WhatsApp al ${PHONES[0].display}`} title="Escribir por WhatsApp">
+            <Icon name="whatsapp" size={22} />
           </a>
           <a href="/pide-tu-cita/" class="btn btn-secondary btn-lg">Pedir cita</a>
         </div>

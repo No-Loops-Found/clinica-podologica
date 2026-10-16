@@ -5,21 +5,25 @@
  *
  * - layout «grid»: tres tarjetas en fila (portada, contacto, cita).
  * - layout «list»: filas apiladas, para columnas estrechas (banda CTA).
+ * - canal «whatsapp»: las mismas tarjetas, pero abren WhatsApp en vez de llamar.
  */
-import { PHONES } from '../consts';
+import { PHONES, waLink } from '../consts';
 import Icon from './Icon.astro';
-interface Props { variant?: 'light' | 'dark'; layout?: 'grid' | 'list'; }
-const { variant = 'light', layout = 'grid' } = Astro.props;
+interface Props { variant?: 'light' | 'dark'; layout?: 'grid' | 'list'; canal?: 'tel' | 'whatsapp'; }
+const { variant = 'light', layout = 'grid', canal = 'tel' } = Astro.props;
 const dark = variant === 'dark';
 const label = dark ? 'text-aqua-light' : 'text-brand-deep';
 const iconBox = dark ? 'bg-white/10 text-aqua-light' : 'bg-mist text-brand-deep';
 const surface = dark ? 'border border-white/10 bg-white/5 hover:bg-white/10' : 'card card-hover';
+const wa = canal === 'whatsapp';
+const enlace = (p: (typeof PHONES)[number]) =>
+  wa ? { href: waLink(p), target: '_blank', rel: 'noopener' } : { href: `tel:${p.tel}` };
 ---
 {layout === 'list' ? (
   <ul class="grid gap-3">
     {PHONES.map((p) => (
       <li>
-        <a href={`tel:${p.tel}`} class:list={['group flex items-center gap-4 rounded-2xl p-4 transition-colors', surface]}>
+        <a {...enlace(p)} class:list={['group flex items-center gap-4 rounded-2xl p-4 transition-colors', surface]}>
           <span class:list={['flex h-11 w-11 shrink-0 items-center justify-center rounded-full', iconBox]}>
             <Icon name={p.icon} size={22} />
           </span>
@@ -28,7 +32,8 @@ const surface = dark ? 'border border-white/10 bg-white/5 hover:bg-white/10' : '
             <span class:list={['text-[0.9rem]', dark ? 'text-paper/70' : 'text-muted']}>{p.who}</span>
           </span>
           <span class:list={['font-display text-[1.45rem] leading-none tabular-nums sm:text-[1.6rem]', dark ? 'text-white' : 'text-deep']}>{p.display}</span>
-          <Icon name="arrow" size={18} class:list={['hidden shrink-0 transition-transform group-hover:translate-x-1 sm:block', label]} />
+          {wa && <span class="sr-only">Escribir por WhatsApp</span>}
+          <Icon name={wa ? 'whatsapp' : 'arrow'} size={18} class:list={['hidden shrink-0 transition-transform group-hover:translate-x-1 sm:block', label]} />
         </a>
       </li>
     ))}
@@ -37,7 +42,7 @@ const surface = dark ? 'border border-white/10 bg-white/5 hover:bg-white/10' : '
   <ul class="grid gap-4 sm:grid-cols-3">
     {PHONES.map((p) => (
       <li>
-        <a href={`tel:${p.tel}`} class:list={['group flex h-full flex-col gap-3 rounded-3xl p-5 transition-colors md:p-6', surface]}>
+        <a {...enlace(p)} class:list={['group flex h-full flex-col gap-3 rounded-3xl p-5 transition-colors md:p-6', surface]}>
           <span class="flex items-center gap-3">
             <span class:list={['flex h-11 w-11 shrink-0 items-center justify-center rounded-full', iconBox]}>
               <Icon name={p.icon} size={22} />
@@ -47,10 +52,17 @@ const surface = dark ? 'border border-white/10 bg-white/5 hover:bg-white/10' : '
           <span class:list={['font-display text-[1.75rem] leading-none tabular-nums md:text-[1.9rem]', dark ? 'text-white' : 'text-deep']}>{p.display}</span>
           <span class:list={['mt-auto flex items-center justify-between gap-2 text-[0.9rem]', dark ? 'text-paper/70' : 'text-muted']}>
             <span>{p.who}</span>
-            <span class:list={['inline-flex items-center gap-1 font-semibold', label]}>
-              Llamar
-              <Icon name="arrow" size={15} class="transition-transform group-hover:translate-x-1" />
-            </span>
+            {wa ? (
+              <span class:list={['inline-flex items-center gap-1.5 font-semibold', label]}>
+                Escribir<span class="sr-only"> por WhatsApp</span>
+                <Icon name="whatsapp" size={17} />
+              </span>
+            ) : (
+              <span class:list={['inline-flex items-center gap-1 font-semibold', label]}>
+                Llamar
+                <Icon name="arrow" size={15} class="transition-transform group-hover:translate-x-1" />
+              </span>
+            )}
           </span>
         </a>
       </li>

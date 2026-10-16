@@ -21,6 +21,9 @@
   --color-line:       #E1E6E4;
   --color-peach:      #F6DDC7;
   --color-honey:      #E9C27B;
+  /* Verde WhatsApp oscurecido: el oficial (#25D366) no cumple AA con texto blanco. */
+  --color-whatsapp:      #15803D;
+  --color-whatsapp-deep: #166534;
 
   --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
   --font-sans: "Public Sans", ui-sans-serif, system-ui, sans-serif;

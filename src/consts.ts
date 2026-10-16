@@ -31,6 +31,12 @@ export const PHONES: {
   { key: 'osteopatia', area: 'Osteopatía', who: 'Elena',            display: '618 475 093', tel: '+34618475093', icon: 'hand', href: '/osteopatia-y-quiromasaje/' },
 ];
 
+/** Los tres números tienen WhatsApp. El enlace abre el chat con el mensaje de cita ya escrito. */
+export const waLink = (p: (typeof PHONES)[number]) =>
+  `https://wa.me/${p.tel.replace('+', '')}?text=${encodeURIComponent(
+    `Hola, me gustaría pedir cita de ${p.area.toLowerCase()}.`
+  )}`;
+
 export const NAV = [
   { href: '/podologia/', label: 'Podología' },
   { href: '/nutricionista/', label: 'Nutrición' },

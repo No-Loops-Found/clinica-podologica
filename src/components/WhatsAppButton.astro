@@ -1,0 +1,38 @@
+---
+/**
+ * Botón flotante de WhatsApp en escritorio. En móvil WhatsApp va dentro de la
+ * barra inferior (CallBar), así que aquí se oculta por debajo de md.
+ */
+import Icon from './Icon.astro';
+import WhatsAppList from './WhatsAppList.astro';
+---
+<div id="wa-float" class="fixed bottom-6 right-6 z-50 hidden md:block">
+  <div id="wa-pop" hidden class="absolute bottom-full right-0 mb-3 w-80 rounded-3xl border border-line bg-white p-2 shadow-lift">
+    <p class="px-3 pb-1 pt-2 text-[0.78rem] font-bold uppercase tracking-wider text-brand-deep">¿A quién quieres escribir?</p>
+    <WhatsAppList />
+  </div>
+  <button id="wa-float-btn" type="button"
+          class="flex items-center gap-2 rounded-full bg-whatsapp px-5 py-3.5 font-semibold leading-none text-white shadow-lift transition-colors hover:bg-whatsapp-deep"
+          aria-expanded="false" aria-controls="wa-pop">
+    <Icon name="whatsapp" size={24} />
+    WhatsApp
+  </button>
+</div>
+
+<script>
+  const wrap = document.getElementById('wa-float');
+  const btn = document.getElementById('wa-float-btn');
+  const pop = document.getElementById('wa-pop');
+
+  function setOpen(open: boolean) {
+    if (!btn || !pop) return;
+    btn.setAttribute('aria-expanded', String(open));
+    pop.hidden = !open;
+  }
+
+  btn?.addEventListener('click', () => setOpen(btn.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('click', (e) => {
+    if (wrap && !wrap.contains(e.target as Node)) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+</script>

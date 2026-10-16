@@ -1,0 +1,25 @@
+---
+/**
+ * Los tres números con enlace a WhatsApp y el mensaje de cita ya escrito.
+ * Se usa en la barra móvil, en el botón flotante de escritorio y en /pide-tu-cita/.
+ */
+import { PHONES, waLink } from '../consts';
+import Icon from './Icon.astro';
+---
+<ul>
+  {PHONES.map((p) => (
+    <li>
+      <a href={waLink(p)} target="_blank" rel="noopener" class="flex items-center gap-3 rounded-2xl px-3 py-3 transition-colors hover:bg-mist">
+        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-mist text-brand-deep">
+          <Icon name={p.icon} size={20} />
+        </span>
+        <span class="flex-1 leading-tight">
+          <span class="sr-only">Escribir por WhatsApp a </span>
+          <span class="block font-semibold text-deep">{p.area}</span>
+          <span class="text-[0.86rem] text-muted">{p.who}</span>
+        </span>
+        <Icon name="whatsapp" size={24} class="shrink-0 text-whatsapp" />
+      </a>
+    </li>
+  ))}
+</ul>
