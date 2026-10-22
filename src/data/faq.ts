@@ -1,4 +1,8 @@
-/** Preguntas y respuestas ya publicadas en la web actual, con la redacción corregida. */
+import { SEGUROS } from '../consts';
+
+const lista = (xs: string[]) => new Intl.ListFormat('es').format(xs);
+
+/** Preguntas y respuestas ya publicadas en la web actual, con la redacción corregida. La de seguros es nueva. */
 export const FAQ = [
   {
     q: '¿Qué es un podólogo?',
@@ -11,6 +15,10 @@ export const FAQ = [
   {
     q: '¿Cuánto dura la consulta?',
     a: 'Entre 30 y 40 minutos. Recogemos tus datos para abrir la historia clínica, te preguntamos qué te ocurre y tratamos la dolencia en la misma visita.',
+  },
+  {
+    q: '¿Trabajáis con seguros o mutualidades?',
+    a: `En podología, sí. Atendemos a pacientes de ${lista(SEGUROS.aseguradoras)}, y Patricia está adherida, a través del Colegio Oficial de Podólogos de Extremadura (COPOEX), al convenio con ${lista(SEGUROS.mutualidades)}. Dínoslo al pedir cita y te confirmamos las condiciones de tu seguro o mutualidad.`,
   },
   {
     q: '¿Qué es lo primero que mi podóloga debe saber de mí?',

@@ -1,18 +1,15 @@
 ---
 import Icon from './Icon.astro';
 import Dato from './Dato.astro';
-import { LEGAL, COLEGIADAS, pendiente } from '../consts';
+import { LEGAL, pendiente } from '../consts';
 interface Props { titulo: string; }
 const { titulo } = Astro.props;
 
-// El aviso desaparece solo cuando se rellenan todos los datos en consts.ts.
-const faltan = [
-  ...new Set(
-    [...Object.values(LEGAL), ...COLEGIADAS.flatMap((c) => Object.values(c))]
-      .filter((v): v is string => typeof v === 'string' && pendiente(v))
-      .map((v) => v.slice(1, -1))
-  ),
-];
+// El aviso desaparece solo cuando se rellenan todos los datos de LEGAL en consts.ts.
+// Las colegiadas incompletas no avisan: el aviso legal las omite hasta tenerlas.
+const faltan = Object.values(LEGAL)
+  .filter((v): v is string => typeof v === 'string' && pendiente(v))
+  .map((v) => v.slice(1, -1));
 ---
 <div class="wrap py-14 md:py-20">
   <div class="max-w-3xl">
@@ -28,7 +25,7 @@ const faltan = [
         </p>
         <p class="mt-2 text-muted">
           Los datos resaltados en el texto hay que rellenarlos en <code>src/consts.ts</code>
-          (<code>LEGAL</code> y <code>COLEGIADAS</code>) antes de publicar.
+          (<code>LEGAL</code>) antes de publicar.
         </p>
         <ul class="mt-4 space-y-1.5 text-muted">
           {faltan.map((f) => <li class="border-l-2 border-mist-deep pl-4">{f}</li>)}

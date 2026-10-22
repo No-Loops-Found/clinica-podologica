@@ -2,7 +2,9 @@
 import Base from '../layouts/Base.astro';
 import Legal from '../components/Legal.astro';
 import Dato from '../components/Dato.astro';
-import { SITE, PHONES, LEGAL, COLEGIADAS } from '../consts';
+import { SITE, PHONES, LEGAL, COLEGIADAS, pendiente } from '../consts';
+
+const colegiadas = COLEGIADAS.filter((c) => !Object.values(c).some(pendiente));
 ---
 <Base title="Aviso legal | Clínica Podológica Patricia Mateos"
       description="Aviso legal de la Clínica Podológica Patricia Mateos, Moraleja (Cáceres).">
@@ -27,10 +29,9 @@ import { SITE, PHONES, LEGAL, COLEGIADAS } from '../consts';
       {LEGAL.registroMercantil && <li><strong>Registro Mercantil:</strong> {LEGAL.registroMercantil}</li>}
     </ul>
 
-    <h3>Profesionales sanitarias</h3>
-    <p>Las profesiones sanitarias reguladas que se ejercen en la clínica son las siguientes:</p>
+    <h3>Profesión regulada y colegiación</h3>
     <ul>
-      {COLEGIADAS.map((c) => (
+      {colegiadas.map((c) => (
         <li>
           <strong>{c.nombre}</strong>, {c.profesion.toLowerCase()}. <Dato v={c.titulo} />, título
           expedido en España. Colegiada en el <Dato v={c.colegio} /> con el número <Dato v={c.numero} />.

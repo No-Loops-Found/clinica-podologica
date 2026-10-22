@@ -42,22 +42,35 @@ export const waLink = (p: (typeof PHONES)[number]) =>
  * se resalta en la web y Legal.astro muestra un aviso mientras quede alguno.
  */
 export const LEGAL = {
-  titular: '[Nombre y apellidos de la titular o razón social]',
-  nif: '[NIF]',
-  registroSanitario: '[Nº de registro sanitario del centro]',
-  actualizado: '[Fecha de última actualización]',
+  titular: 'Patricia Mateos Luis',
+  nif: '28979067X',
+  registroSanitario: '10104830',
+  actualizado: '22 de octubre de 2026',
   // Solo si la titular es una sociedad (S.L., etc.): datos de inscripción en el Registro Mercantil.
   registroMercantil: null as string | null,
   // Delegado de protección de datos: solo si la clínica está obligada (art. 34 LOPDGDD). null = no hay.
   dpd: null as string | null,
 };
 
-/** Profesiones sanitarias reguladas (LSSI art. 10.1.f). Osteopatía y quiromasaje no lo son. */
+/**
+ * Profesiones sanitarias reguladas (LSSI art. 10.1.f). Osteopatía y quiromasaje no lo son.
+ * La ley solo obliga con la titular. Una ficha con algún dato entre corchetes no se publica:
+ * aparece sola en el aviso legal en cuanto se completa. Faltan Celia y Tania.
+ */
 export const COLEGIADAS = [
-  { nombre: 'Patricia Mateos', profesion: 'Podóloga', titulo: 'Graduada en Podología por la Universidad de Extremadura', colegio: 'Colegio Oficial de Podólogos de Extremadura', numero: '[Nº de colegiada]' },
-  { nombre: 'Celia Castellano', profesion: 'Podóloga', titulo: 'Graduada en Podología por la Universidad de Extremadura', colegio: 'Colegio Oficial de Podólogos de Extremadura', numero: '[Nº de colegiada]' },
+  { nombre: 'Patricia Mateos', profesion: 'Podóloga', titulo: 'Graduada en Podología por la Universidad de Extremadura', colegio: 'Colegio Oficial de Podólogos de Extremadura (COPOEX)', numero: '838100366' },
+  { nombre: 'Celia Castellano', profesion: 'Podóloga', titulo: 'Graduada en Podología por la Universidad de Extremadura', colegio: 'Colegio Oficial de Podólogos de Extremadura (COPOEX)', numero: '[Nº de colegiada]' },
   { nombre: 'Tania Zamarreño', profesion: 'Dietista-nutricionista', titulo: '[Titulación universitaria]', colegio: '[Colegio profesional]', numero: '[Nº de colegiada]' },
 ];
+
+/**
+ * Seguros con los que trabaja la consulta de podología. La adhesión al convenio de
+ * las mutualidades es personal: en el listado de MUGEJU (2S 2026) figura Patricia.
+ */
+export const SEGUROS = {
+  aseguradoras: ['Asisa', 'Caser', 'Grupo HNA'],
+  mutualidades: ['MUFACE', 'ISFAS', 'MUGEJU'],
+};
 
 export const pendiente = (v: string | null) => v?.startsWith('[') ?? false;
 

@@ -6,7 +6,7 @@ import Titulo from '../components/Titulo.astro';
 import Especialista from '../components/Especialista.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Icon from '../components/Icon.astro';
-import { PHONES } from '../consts';
+import { PHONES, SEGUROS } from '../consts';
 import { EQUIPO } from '../data/equipo';
 import { FAQ } from '../data/faq';
 
@@ -54,6 +54,11 @@ const bloques = [
 const faqPies = FAQ.filter((f) =>
   ['¿Qué es la hiperqueratosis?', '¿Qué es un heloma?', '¿Qué es una uña encarnada?', '¿Cuándo debo hacerme un estudio biomecánico de la pisada?', '¿Qué es lo primero que mi podóloga debe saber de mí?'].includes(f.q)
 );
+
+const seguros = [
+  { icon: 'shield', titulo: 'Aseguradoras', texto: 'Atendemos a pacientes de estas compañías:', lista: SEGUROS.aseguradoras },
+  { icon: 'user', titulo: 'Mutualidades de funcionarios', texto: 'Patricia está adherida, a través del Colegio Oficial de Podólogos de Extremadura (COPOEX), al convenio con:', lista: SEGUROS.mutualidades },
+];
 const podologas = EQUIPO.filter((m) => m.rol.startsWith('Podóloga'));
 ---
 <Base
@@ -104,6 +109,27 @@ const podologas = EQUIPO.filter((m) => m.rol.startsWith('Podóloga'));
       ))}
     </div>
   </div>
+
+  <section class="wrap pb-16 lg:pb-20" aria-labelledby="seguros-titulo">
+    <div class="rounded-[2rem] bg-mist p-7 md:p-10">
+      <Titulo eyebrow="Seguros" id="seguros-titulo"
+              intro="Si tienes seguro de salud o eres mutualista, dínoslo al pedir cita y te confirmamos las condiciones.">
+        Aseguradoras y mutualidades
+      </Titulo>
+      <ul class="mt-8 grid gap-4 md:grid-cols-2">
+        {seguros.map((s) => (
+          <li class="rounded-3xl bg-white p-6 shadow-soft">
+            <span class="flex h-11 w-11 items-center justify-center rounded-full bg-mist text-brand-deep"><Icon name={s.icon} size={22} /></span>
+            <h3 class="mt-4 text-[1.2rem]">{s.titulo}</h3>
+            <p class="mt-2 text-[0.95rem] text-muted">{s.texto}</p>
+            <ul class="mt-4 flex flex-wrap gap-2">
+              {s.lista.map((x) => <li class="rounded-full bg-sand px-3.5 py-1.5 font-medium text-deep">{x}</li>)}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
 
   <section class="border-y border-line bg-sand" aria-labelledby="faq-pies">
     <div class="wrap grid gap-10 py-20 md:grid-cols-[0.75fr_1.25fr]">
